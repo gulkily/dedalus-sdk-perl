@@ -17,17 +17,19 @@ my $client = Dedalus->new();
 my $response = $client->images->generate(
     prompt          => $prompt,
     model           => $model,
-    response_format => 'b64_json',
 );
 
 my $image = $response->data->[0];
-my $b64   = $image->b64_json
-  or die "API did not return b64_json data; try setting response_format => 'url'";
-
-my $bytes = decode_base64($b64);
-open my $fh, '>', $output or die "Unable to write $output: $!";
-binmode $fh;
-print {$fh} $bytes;
-close $fh;
-
-print "Saved image to $output\n";
+if (my $b64 = $image->b64_json) {
+    my $bytes = decode_base64($b64);
+    open my $fh, '>', $output or die "Unable to write $output: $!";
+    binmode $fh;
+    print {$fh} $bytes;
+    close $fh;
+    print "Saved image to $output\n";
+} elsif (my $url = $image->url) {
+    print "Image available at: $url\n";
+    print "Download manually if needed.\n";
+} else {
+    die "API returned no image data";
+}

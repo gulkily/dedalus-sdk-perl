@@ -73,6 +73,6 @@ export DEDALUS_API_KEY=sk-...
 perl examples/image_generate.pl "A watercolor portrait of Stephen Dedalus"
 ```
 
-Set `DEDALUS_IMAGE_PROMPT`, `DEDALUS_IMAGE_MODEL`, or `DEDALUS_IMAGE_OUTPUT` to customize the request. The script requests `b64_json` images and writes the decoded PNG to disk.
+Set `DEDALUS_IMAGE_PROMPT`, `DEDALUS_IMAGE_MODEL`, or `DEDALUS_IMAGE_OUTPUT` to customize the request. If the API returns base64 data the script writes it to disk; otherwise it prints the image URL for manual download.
 
 Additional details will be added as the SDK implementation evolves.
