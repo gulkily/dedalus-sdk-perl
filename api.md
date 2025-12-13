@@ -4,6 +4,8 @@ This document will mirror the generated endpoints from the Python SDK once Perl 
 
 - `health.check` — implemented, returns `Dedalus::Types::HealthCheckResponse` (status string)
 - `chat.completions.create` — implemented for non-streaming calls, returns `Dedalus::Types::Chat::Completion`
+- `models.list` — implemented, returns `Dedalus::Types::ListModelsResponse`
+- `models.retrieve` — implemented, returns `Dedalus::Types::Model`
 - Remaining resources are pending porting from `PLAN.md` / Python template.
 
 Update this file as new resource modules land to keep parity with `dedalus-sdk-python/api.md`.

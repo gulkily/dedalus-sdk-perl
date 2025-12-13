@@ -1,10 +1,11 @@
 use Test2::V0;
+use Dedalus;
 
 {
     package TestHTTP;
     sub new { bless { response => $_[1] }, $_[0] }
     sub request {
-        my ($self, @_) = @_;
+        my ($self, @args) = @_;
         return $self->{response};
     }
 }

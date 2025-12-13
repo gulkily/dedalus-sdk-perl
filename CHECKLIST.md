@@ -19,6 +19,7 @@
   - [ ] Add model coercion, validation, and file helpers
 - [ ] Implement resource modules (API surface)
   - [x] Implement `health` resource and integration example
+  - [x] Implement `models` resource (list & retrieve)
   - [ ] Mirror Python resource namespaces (chat, audio, files, etc.)
   - [ ] Support nested sub-resources and consistent signatures
 - [ ] Add streaming and async support

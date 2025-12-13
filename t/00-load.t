@@ -1,11 +1,10 @@
 use Test2::V0;
+use Dedalus;
+use Dedalus::Client;
+use Dedalus::Config;
+use Dedalus::Types::HealthCheckResponse;
 
 local $ENV{DEDALUS_API_KEY} = 'test-key';
-
-use_ok('Dedalus');
-use_ok('Dedalus::Client');
-use_ok('Dedalus::Config');
-use_ok('Dedalus::Types::HealthCheckResponse');
 
 my $client = Dedalus->new(environment => 'development');
 isa_ok($client, 'Dedalus::Client');

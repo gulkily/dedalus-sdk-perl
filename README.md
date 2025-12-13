@@ -39,4 +39,13 @@ perl examples/chat_completion.pl
 
 The script sends a `chat.completions.create` request and prints the assistant's response. Set `DEDALUS_MODEL` to target a specific model ID if needed.
 
+### Listing models
+
+```
+export DEDALUS_API_KEY=sk-...
+perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $models = $c->models->list; print scalar(@{$models->data}), " models available\n";'
+```
+
+Use `models->retrieve($id)` to inspect capabilities and defaults for a specific model.
+
 Additional details will be added as the SDK implementation evolves.

@@ -6,6 +6,7 @@ use Dedalus::Config;
 use Dedalus::HTTP;
 use Dedalus::Resources::Health;
 use Dedalus::Resources::Chat;
+use Dedalus::Resources::Models;
 
 has config => (
     is       => 'ro',
@@ -30,6 +31,12 @@ has chat => (
     builder => '_build_chat_resource',
 );
 
+has models => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_models_resource',
+);
+
 sub _build_http {
     my ($self) = @_;
     return Dedalus::HTTP->new(config => $self->config);
@@ -43,6 +50,11 @@ sub _build_health_resource {
 sub _build_chat_resource {
     my ($self) = @_;
     return Dedalus::Resources::Chat->new(client => $self);
+}
+
+sub _build_models_resource {
+    my ($self) = @_;
+    return Dedalus::Resources::Models->new(client => $self);
 }
 
 around BUILDARGS => sub {
