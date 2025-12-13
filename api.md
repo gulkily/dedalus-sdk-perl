@@ -8,6 +8,9 @@ This document will mirror the generated endpoints from the Python SDK once Perl 
 - `models.list` — implemented, returns `Dedalus::Types::ListModelsResponse`
 - `models.retrieve` — implemented, returns `Dedalus::Types::Model`
 - `audio.transcriptions.create` — implemented, returns `Dedalus::Types::Audio::TranscriptionCreateResponse`
+- `images.generate` — implemented, returns `Dedalus::Types::ImagesResponse`
+- `images.edit` — implemented, returns `Dedalus::Types::ImagesResponse`
+- `images.create_variation` — implemented, returns `Dedalus::Types::ImagesResponse`
 - Remaining resources are pending porting from `PLAN.md` / Python template.
 
 Update this file as new resource modules land to keep parity with `dedalus-sdk-python/api.md`.

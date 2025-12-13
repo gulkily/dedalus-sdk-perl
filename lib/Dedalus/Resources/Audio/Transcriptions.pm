@@ -1,9 +1,8 @@
 package Dedalus::Resources::Audio::Transcriptions;
 use Moo;
 use Carp qw(croak);
-use File::Basename qw(basename);
-
 use Dedalus::Types::Audio::TranscriptionCreateResponse;
+use Dedalus::Util::Multipart qw(normalize_file_field build_multipart_body);
 
 has client => (
     is       => 'ro',
@@ -15,33 +14,17 @@ sub create {
     croak 'file is required' unless $params{file};
     croak 'model is required' unless $params{model};
 
-    my $file = $params{file};
-    my ($filename, $content, $content_type);
-
-    if (ref $file eq 'ARRAY') {
-        ($filename, $content, $content_type) = @$file;
-    } elsif (ref $file eq 'SCALAR') {
-        $content = $$file;
-        $filename = 'upload.wav';
-    } else {
-        $filename = basename($file);
-        open my $fh, '<', $file or die "unable to open $file: $!";
-        binmode $fh;
-        local $/;
-        $content = <$fh>;
-        close $fh;
-    }
-
-    require Digest::MD5;
-    my $boundary = 'DedalusBoundary' . Digest::MD5::md5_hex(rand() . $$);
-    my $body = _build_multipart($boundary, {
-        file  => { filename => $filename, content => $content, content_type => $content_type // 'application/octet-stream' },
+    my $file_field = normalize_file_field($params{file}, 'upload.wav', 'application/octet-stream');
+    my %fields = (
+        file  => $file_field,
         model => $params{model},
-        (language        => $params{language})        x !!$params{language},
-        (prompt          => $params{prompt})          x !!$params{prompt},
-        (response_format => $params{response_format}) x !!$params{response_format},
-        (temperature     => $params{temperature})     x defined $params{temperature},
-    });
+    );
+    $fields{language}        = $params{language}        if $params{language};
+    $fields{prompt}          = $params{prompt}          if $params{prompt};
+    $fields{response_format} = $params{response_format} if $params{response_format};
+    $fields{temperature}     = $params{temperature}     if defined $params{temperature};
+
+    my ($boundary, $body) = build_multipart_body(\%fields);
 
     my $response = $self->client->request(
         'POST',
@@ -54,26 +37,6 @@ sub create {
 
     my $data = $response->{data} || {};
     return Dedalus::Types::Audio::TranscriptionCreateResponse->from_hash($data);
-}
-
-sub _build_multipart {
-    my ($boundary, $fields) = @_;
-    my @parts;
-    for my $key (keys %$fields) {
-        my $value = $fields->{$key};
-        if (ref $value eq 'HASH' && exists $value->{content}) {
-            push @parts,
-              "--$boundary\r\n"
-              . "Content-Disposition: form-data; name=\"$key\"; filename=\"$value->{filename}\"\r\n"
-              . "Content-Type: $value->{content_type}\r\n\r\n$value->{content}\r\n";
-        } else {
-            push @parts,
-              "--$boundary\r\n"
-              . "Content-Disposition: form-data; name=\"$key\"\r\n\r\n$value\r\n";
-        }
-    }
-    push @parts, "--$boundary--\r\n";
-    return join '', @parts;
 }
 
 1;

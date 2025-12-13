@@ -66,4 +66,13 @@ perl examples/audio_transcription.pl /path/to/audio.wav
 
 Set `DEDALUS_AUDIO_FILE` or pass the file path as the first argument. Override `DEDALUS_TRANSCRIPTION_MODEL` to choose a different Whisper-compatible ID. The script prints the transcript returned by the API.
 
+### Image generation
+
+```
+export DEDALUS_API_KEY=sk-...
+perl examples/image_generate.pl "A watercolor portrait of Stephen Dedalus"
+```
+
+Set `DEDALUS_IMAGE_PROMPT`, `DEDALUS_IMAGE_MODEL`, or `DEDALUS_IMAGE_OUTPUT` to customize the request. The script requests `b64_json` images and writes the decoded PNG to disk.
+
 Additional details will be added as the SDK implementation evolves.

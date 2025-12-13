@@ -22,6 +22,7 @@
   - [x] Implement `models` resource (list & retrieve)
   - [x] Implement `embeddings` resource
   - [x] Implement `audio.transcriptions` resource
+  - [x] Implement `images` resource (generate/edit/variation)
   - [ ] Mirror Python resource namespaces (chat, audio, files, etc.)
   - [ ] Support nested sub-resources and consistent signatures
 - [ ] Add streaming and async support
