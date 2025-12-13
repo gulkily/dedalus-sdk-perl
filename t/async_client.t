@@ -12,6 +12,8 @@ isa_ok($client->embeddings, 'Dedalus::Async::Embeddings');
 isa_ok($client->images, 'Dedalus::Async::Images');
 isa_ok($client->models, 'Dedalus::Async::Models');
 isa_ok($client->health, 'Dedalus::Async::Health');
+isa_ok($client->files, 'Dedalus::Async::Files');
+isa_ok($client->files->content, 'Dedalus::Async::Files::Content');
 
 my $mock = Test::MockModule->new('Dedalus::Async::Client');
 $mock->redefine('request_future', sub {
@@ -51,6 +53,21 @@ $mock->redefine('request_future', sub {
     }
     if ($path eq '/health') {
         return Future->done({ status => 200, headers => {}, data => { status => 'ok' } });
+    }
+    if ($path eq '/v1/files' && $method eq 'GET') {
+        return Future->done({ status => 200, headers => {}, data => { object => 'list', data => [ { id => 'file-1', object => 'file', filename => 'example.txt' } ] } });
+    }
+    if ($path eq '/v1/files' && $method eq 'POST') {
+        return Future->done({ status => 200, headers => {}, data => { id => 'file-2', object => 'file', filename => 'upload.dat' } });
+    }
+    if ($path eq '/v1/files/file-1' && $method eq 'GET') {
+        return Future->done({ status => 200, headers => {}, data => { id => 'file-1', object => 'file', filename => 'example.txt' } });
+    }
+    if ($path eq '/v1/files/file-1' && $method eq 'DELETE') {
+        return Future->done({ status => 200, headers => {}, data => { id => 'file-1', deleted => 1 } });
+    }
+    if ($path eq '/v1/files/file-1/content' && $method eq 'GET') {
+        return Future->done({ status => 200, headers => {}, content => 'hello-bytes' });
     }
     die "unexpected path $path";
 });
@@ -101,5 +118,20 @@ isa_ok($model_future->get, 'Dedalus::Types::Model');
 
 my $health_future = $client->health->check;
 isa_ok($health_future->get, 'Dedalus::Types::HealthCheckResponse');
+
+my $files_list_future = $client->files->list;
+isa_ok($files_list_future->get, 'Dedalus::Types::ListFilesResponse');
+
+my $file_future = $client->files->retrieve('file-1');
+isa_ok($file_future->get, 'Dedalus::Types::FileObject');
+
+my $upload_future = $client->files->upload(purpose => 'fine-tune', file => \"hello");
+isa_ok($upload_future->get, 'Dedalus::Types::FileObject');
+
+my $delete_future = $client->files->delete('file-1');
+is($delete_future->get->{deleted}, 1, 'delete future returns hash');
+
+my $content_future = $client->files->content->retrieve('file-1');
+is($content_future->get->{content}, 'hello-bytes', 'content future returns payload');
 
 done_testing;

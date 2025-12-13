@@ -129,3 +129,21 @@ perl examples/image_generate.pl "A watercolor portrait of Stephen Dedalus"
 Set `DEDALUS_IMAGE_PROMPT`, `DEDALUS_IMAGE_MODEL`, or `DEDALUS_IMAGE_OUTPUT` to customize the request. If the API returns base64 data the script writes it to disk; otherwise it prints the image URL for manual download.
 
 Additional details will be added as the SDK implementation evolves.
+
+### File uploads and downloads
+
+```
+export DEDALUS_API_KEY=sk-...
+perl -Ilib -e '
+    use Dedalus;
+    my $client = Dedalus->new;
+    my $file = $client->files->upload(
+        purpose => "fine-tune",
+        file    => \"training data",
+    );
+    my $download = $client->files->content->retrieve($file->id);
+    print length($download->{content}), " bytes saved\n";
+'
+```
+
+`files->list` and `files->retrieve($id)` return typed `Dedalus::Types::FileObject` instances so you can inspect metadata before downloading content.

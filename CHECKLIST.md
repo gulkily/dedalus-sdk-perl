@@ -6,14 +6,14 @@
   - [x] Review `README.md`, `api.md`, `pyproject.toml`, and `src/dedalus_labs`
   - [x] Enumerate public APIs and shared models
   - [x] Note cross-cutting helpers (retries, multipart, query serialization)
-- [ ] Bootstrap Perl distribution skeleton
+- [x] Bootstrap Perl distribution skeleton
   - [x] Set up CPAN-style layout (`lib/`, `t/`, `script/`, etc.)
   - [x] Choose build/dependency tooling and capture metadata
   - [x] Port docs into Perl-centric `README.md` and stub `api.md`
-- [ ] Implement configuration, auth, and environment handling
+- [x] Implement configuration, auth, and environment handling
   - [x] Add `Dedalus::Config` with env + version info
   - [x] Create `Dedalus::Exception` hierarchy
-- [ ] Build HTTP client abstraction
+- [x] Build HTTP client abstraction
   - [x] Implement sync HTTP layer with retries, serialization, multipart
   - [x] Create `Dedalus::Client` wrapper exposing resources
 - [ ] Define data models and serialization utilities
@@ -27,7 +27,7 @@
   - [x] Implement `images` resource (generate/edit/variation)
   - [x] Implement `audio.translations` + `audio.speech` resources
   - [x] Mirror Python resource namespaces (chat, audio, files, etc.)
-  - [ ] Support nested sub-resources and consistent signatures
+  - [x] Support nested sub-resources and consistent signatures
 - [x] Add streaming and async support
   - [x] Implement SSE streaming helpers
   - [x] Provide `Dedalus::Async` built on async primitives

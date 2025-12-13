@@ -10,6 +10,7 @@ use Dedalus::Resources::Models;
 use Dedalus::Resources::Embeddings;
 use Dedalus::Resources::Audio;
 use Dedalus::Resources::Images;
+use Dedalus::Resources::Files;
 
 has config => (
     is       => 'ro',
@@ -58,6 +59,12 @@ has images => (
     builder => '_build_images_resource',
 );
 
+has files => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_files_resource',
+);
+
 sub _build_http {
     my ($self) = @_;
     return Dedalus::HTTP->new(config => $self->config);
@@ -91,6 +98,11 @@ sub _build_audio_resource {
 sub _build_images_resource {
     my ($self) = @_;
     return Dedalus::Resources::Images->new(client => $self);
+}
+
+sub _build_files_resource {
+    my ($self) = @_;
+    return Dedalus::Resources::Files->new(client => $self);
 }
 
 around BUILDARGS => sub {
