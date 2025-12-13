@@ -14,5 +14,6 @@ use Dedalus::Types::Image;
 use Dedalus::Types::ImagesResponse;
 use Dedalus::Types::FileObject;
 use Dedalus::Types::ListFilesResponse;
+use Dedalus::Types::Response;
 
 1;

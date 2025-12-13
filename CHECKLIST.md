@@ -31,6 +31,7 @@
   - [x] Implement `audio.translations` + `audio.speech` resources
   - [x] Mirror Python resource namespaces (chat, audio, files, etc.)
   - [x] Support nested sub-resources and consistent signatures
+  - [x] Implement `responses` resource (create & retrieve)
 - [x] Add streaming and async support
   - [x] Implement SSE streaming helpers
   - [x] Provide `Dedalus::Async` built on async primitives

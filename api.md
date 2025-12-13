@@ -19,6 +19,8 @@ This document will mirror the generated endpoints from the Python SDK once Perl 
 - `files.upload` — implemented, returns `Dedalus::Types::FileObject`
 - `files.delete` — implemented, returns deletion metadata hash
 - `files.content.retrieve` — implemented, returns `{ status, headers, content }`
+- `responses.create` — implemented, returns `Dedalus::Types::Response`
+- `responses.retrieve` — implemented, returns `Dedalus::Types::Response`
 - Remaining resources are pending porting from `PLAN.md` / Python template.
 
 Update this file as new resource modules land to keep parity with `dedalus-sdk-python/api.md`.

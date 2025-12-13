@@ -136,6 +136,15 @@ perl examples/image_generate.pl "A watercolor portrait of Stephen Dedalus"
 
 Set `DEDALUS_IMAGE_PROMPT`, `DEDALUS_IMAGE_MODEL`, or `DEDALUS_IMAGE_OUTPUT` to customize the request. If the API returns base64 data the script writes it to disk; otherwise it prints the image URL for manual download.
 
+### Using the responses endpoint
+
+```
+export DEDALUS_API_KEY=sk-...
+perl examples/create_response.pl "Summarize Dedalus in one sentence"
+```
+
+The script hits `POST /v1/responses`, prints the response ID, and dumps message blocks if the API returns structured output. Provide `DEDALUS_RESPONSE_MODEL` to override the default model ID.
+
 Additional details will be added as the SDK implementation evolves.
 
 ### File uploads and downloads

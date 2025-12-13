@@ -12,6 +12,7 @@ isa_ok($client->audio, 'Dedalus::Resources::Audio');
 isa_ok($client->images, 'Dedalus::Resources::Images');
 isa_ok($client->files, 'Dedalus::Resources::Files');
 isa_ok($client->files->content, 'Dedalus::Resources::Files::Content');
+isa_ok($client->responses, 'Dedalus::Resources::Responses');
 
 ok(1, 'chat resource wired');
 

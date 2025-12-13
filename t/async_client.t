@@ -14,6 +14,7 @@ isa_ok($client->models, 'Dedalus::Async::Models');
 isa_ok($client->health, 'Dedalus::Async::Health');
 isa_ok($client->files, 'Dedalus::Async::Files');
 isa_ok($client->files->content, 'Dedalus::Async::Files::Content');
+isa_ok($client->responses, 'Dedalus::Async::Responses');
 
 my $mock = Test::MockModule->new('Dedalus::Async::Client');
 $mock->redefine('request_future', sub {
@@ -68,6 +69,12 @@ $mock->redefine('request_future', sub {
     }
     if ($path eq '/v1/files/file-1/content' && $method eq 'GET') {
         return Future->done({ status => 200, headers => {}, content => 'hello-bytes' });
+    }
+    if ($path eq '/v1/responses' && $method eq 'POST') {
+        return Future->done({ status => 200, headers => {}, data => { id => 'resp_1', object => 'response', model => 'gpt-4', output => [] } });
+    }
+    if ($path eq '/v1/responses/resp_1' && $method eq 'GET') {
+        return Future->done({ status => 200, headers => {}, data => { id => 'resp_1', object => 'response', model => 'gpt-4' } });
     }
     die "unexpected path $path";
 });
@@ -133,5 +140,14 @@ is($delete_future->get->{deleted}, 1, 'delete future returns hash');
 
 my $content_future = $client->files->content->retrieve('file-1');
 is($content_future->get->{content}, 'hello-bytes', 'content future returns payload');
+
+my $resp_future = $client->responses->create(
+    model => 'gpt-4',
+    input => [ { role => 'user', content => 'Hello' } ],
+);
+isa_ok($resp_future->get, 'Dedalus::Types::Response');
+
+my $resp_retrieve = $client->responses->retrieve('resp_1');
+isa_ok($resp_retrieve->get, 'Dedalus::Types::Response');
 
 done_testing;
