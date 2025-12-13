@@ -1,6 +1,6 @@
 package Dedalus::Stream;
 use Moo;
-use Types::Standard qw(ArrayRef Bool Maybe);
+use Types::Standard qw(ArrayRef Bool);
 use AnyEvent;
 
 has queue => (
@@ -15,27 +15,44 @@ has finished => (
     default => sub { 0 },
 );
 
+has cv => (
+    is      => 'rw',
+);
+
 has guard => (
     is => 'rw',
 );
 
 sub next {
     my ($self) = @_;
-    while (!@{ $self->queue }) {
+    while (1) {
+        if (@{ $self->queue }) {
+            return shift @{ $self->queue };
+        }
         return undef if $self->finished;
-        AnyEvent->one_event;
+        my $cv = AnyEvent->condvar;
+        $self->cv($cv);
+        $cv->recv;
     }
-    return shift @{ $self->queue };
 }
 
 sub push_chunk {
     my ($self, $chunk) = @_;
-    push @{ $self->queue }, $chunk if defined $chunk;
+    return unless defined $chunk;
+    push @{ $self->queue }, $chunk;
+    if (my $cv = $self->cv) {
+        $self->cv(undef);
+        $cv->send;
+    }
 }
 
 sub finish {
     my ($self) = @_;
     $self->finished(1);
+    if (my $cv = $self->cv) {
+        $self->cv(undef);
+        $cv->send;
+    }
 }
 
 sub all {
