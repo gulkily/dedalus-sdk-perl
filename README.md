@@ -22,6 +22,10 @@ make test
 
 Run `script/lint.sh` to execute `perlcritic` and ensure files are formatted according to `.perltidyrc`. GitHub Actions (see `.github/workflows/ci.yml`) installs dependencies for Perl 5.36/5.38, runs `make test`, and enforces the lint pipeline on every push/PR.
 
+### Release process
+
+See `RELEASE.md` for the current manual release flow (version bump, changelog update, lint/test gates, tagging, and CPAN upload steps). Future automation should mirror the Python SDK’s release scripts, so keep that document up to date as tooling evolves.
+
 ## Quick API check
 
 Set `DEDALUS_API_KEY` and run the example script:

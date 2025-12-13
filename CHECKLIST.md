@@ -46,4 +46,4 @@
 - [ ] Configure tooling, CI, and release automation
   - [x] Add lint/format tooling and CI workflows
   - [ ] Mirror Python release tooling (version bump automation, package publish scripts)
-  - [ ] Document release process (Changes, tagging, CPAN upload)
+  - [x] Document release process (Changes, tagging, CPAN upload)
