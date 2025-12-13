@@ -42,10 +42,11 @@ The script sends a `chat.completions.create` request and prints the assistant's 
 ### Streaming chat completions
 
 ```
-perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $stream = $c->chat->completions->create(model => "openai/gpt-5-nano", stream => 1, messages => [{role => "user", content => "Hello"}]); while (my $chunk = $stream->next) { print $chunk->{choices}[0]{delta}{content} // ""; }'
+export DEDALUS_API_KEY=sk-...
+perl examples/chat_stream_live.pl "Hello, how do you feel today?"
 ```
 
-The `Dedalus::Stream` object yields decoded SSE payloads until the `[DONE]` sentinel is reached.
+Chunks print as soon as they arrive. The underlying `Dedalus::Stream` object yields decoded SSE payloads until the `[DONE]` sentinel is reached.
 
 ### Listing models
 
