@@ -39,6 +39,14 @@ perl examples/chat_completion.pl
 
 The script sends a `chat.completions.create` request and prints the assistant's response. Set `DEDALUS_MODEL` to target a specific model ID if needed.
 
+### Streaming chat completions
+
+```
+perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $stream = $c->chat->completions->create(model => "openai/gpt-5-nano", stream => 1, messages => [{role => "user", content => "Hello"}]); while (my $chunk = $stream->next) { print $chunk->{choices}[0]{delta}{content} // ""; }'
+```
+
+The `Dedalus::Stream` object yields decoded SSE payloads until the `[DONE]` sentinel is reached.
+
 ### Listing models
 
 ```

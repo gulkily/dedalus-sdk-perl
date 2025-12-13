@@ -4,6 +4,7 @@ This document will mirror the generated endpoints from the Python SDK once Perl 
 
 - `health.check` — implemented, returns `Dedalus::Types::HealthCheckResponse` (status string)
 - `chat.completions.create` — implemented for non-streaming calls, returns `Dedalus::Types::Chat::Completion`
+- `chat.completions.create(stream => 1)` — returns `Dedalus::Stream` of incremental SSE events
 - `embeddings.create` — implemented, returns `Dedalus::Types::CreateEmbeddingResponse`
 - `models.list` — implemented, returns `Dedalus::Types::ListModelsResponse`
 - `models.retrieve` — implemented, returns `Dedalus::Types::Model`

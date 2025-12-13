@@ -3,6 +3,8 @@ use Moo;
 use Carp qw(croak);
 
 use Dedalus::Types::Chat::Completion;
+use Dedalus::Stream;
+use Dedalus::Util::SSE qw(to_stream_events);
 
 has client => (
     is       => 'ro',
@@ -47,6 +49,11 @@ sub create {
         %request_opts,
         json => \%body,
     );
+
+    if ($body{stream}) {
+        my $events = to_stream_events($response->{content});
+        return Dedalus::Stream->new(events => $events);
+    }
 
     my $data = $response->{data} || {};
     return Dedalus::Types::Chat::Completion->from_hash($data);
