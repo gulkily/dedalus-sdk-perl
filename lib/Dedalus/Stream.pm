@@ -1,34 +1,51 @@
 package Dedalus::Stream;
 use Moo;
-use Types::Standard qw(ArrayRef);
+use Types::Standard qw(ArrayRef Bool Maybe);
+use AnyEvent;
 
-has events => (
-    is       => 'ro',
-    isa      => ArrayRef,
-    required => 1,
+has queue => (
+    is      => 'ro',
+    isa     => ArrayRef,
+    default => sub { [] },
 );
 
-has _cursor => (
+has finished => (
     is      => 'rw',
+    isa     => Bool,
     default => sub { 0 },
+);
+
+has guard => (
+    is => 'rw',
 );
 
 sub next {
     my ($self) = @_;
-    my $index = $self->_cursor;
-    return undef if $index >= @{ $self->events };
-    $self->_cursor($index + 1);
-    return $self->events->[$index];
+    while (!@{ $self->queue }) {
+        return undef if $self->finished;
+        AnyEvent->one_event;
+    }
+    return shift @{ $self->queue };
+}
+
+sub push_chunk {
+    my ($self, $chunk) = @_;
+    push @{ $self->queue }, $chunk if defined $chunk;
+}
+
+sub finish {
+    my ($self) = @_;
+    $self->finished(1);
 }
 
 sub all {
     my ($self) = @_;
-    return @{ $self->events };
+    return @{ $self->queue };
 }
 
 sub reset {
     my ($self) = @_;
-    $self->_cursor(0);
+    @{ $self->queue } = ();
 }
 
 sub to_arrayref {

@@ -118,4 +118,9 @@ sub request {
     return $self->http->request($method, $path, %opts);
 }
 
+sub stream_request {
+    my ($self, $method, $path, %opts) = @_;
+    return $self->http->stream_request($method, $path, %opts);
+}
+
 1;

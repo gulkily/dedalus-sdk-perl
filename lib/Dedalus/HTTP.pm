@@ -5,6 +5,8 @@ use URI;
 use Try::Tiny;
 use Time::HiRes qw(usleep);
 use Cpanel::JSON::XS qw(encode_json decode_json);
+use AnyEvent;
+use AnyEvent::HTTP;
 
 use Dedalus::Exception::APIConnectionError;
 use Dedalus::Exception::APITimeoutError;
@@ -75,6 +77,42 @@ sub request {
     }
 
     return $self->_handle_response($response, $method, $url);
+}
+
+sub stream_request {
+    my ($self, $method, $path, %opts) = @_;
+    my $on_chunk = delete $opts{on_chunk} or die 'on_chunk callback required';
+    $method = uc $method;
+    my $url = $self->_build_url($path, $opts{query});
+    my %headers = %{ $self->config->headers };
+    if (my $extra = $opts{headers}) {
+        %headers = (%headers, %{$extra});
+    }
+
+    my $content;
+    if (exists $opts{json}) {
+        $headers{'Content-Type'} ||= 'application/json';
+        $content = encode_json($opts{json});
+    } elsif (defined $opts{content}) {
+        $content = $opts{content};
+    }
+
+    my $guard;
+    $guard = http_request $method => $url,
+        headers => \%headers,
+        body    => $content,
+        on_body => sub {
+            my ($chunk, $hdr) = @_;
+            return 1 unless defined $chunk && length $chunk;
+            $on_chunk->($chunk);
+            return 1;
+        },
+        sub {
+            my ($body, $hdr) = @_;
+            $on_chunk->(undef, $hdr);
+        };
+
+    return $guard;
 }
 
 sub _build_url {

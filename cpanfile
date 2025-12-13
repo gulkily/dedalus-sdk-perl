@@ -9,6 +9,7 @@ requires 'Try::Tiny';
 requires 'Future';
 requires 'AnyEvent';
 requires 'Hash::Merge';
+requires 'AnyEvent::HTTP';
 
 on 'test' => sub {
     requires 'Test2::V0';

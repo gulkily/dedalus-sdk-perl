@@ -4,7 +4,7 @@ use Carp qw(croak);
 
 use Dedalus::Types::Chat::Completion;
 use Dedalus::Stream;
-use Dedalus::Util::SSE qw(to_stream_events);
+use Dedalus::Util::SSE qw(to_stream_events build_decoder);
 
 has client => (
     is       => 'ro',
@@ -43,17 +43,45 @@ sub create {
         $request_opts{headers} = $extra;
     }
 
+    if ($body{stream}) {
+        my $stream = Dedalus::Stream->new;
+        my $decoder = build_decoder(sub {
+            my ($event) = @_;
+            if (defined $event) {
+                $stream->push_chunk($event);
+            } else {
+                $stream->finish;
+            }
+        });
+
+        my $guard = $self->client->stream_request(
+            'POST',
+            '/v1/chat/completions',
+            %request_opts,
+            json => \%body,
+            on_chunk => sub {
+                my ($chunk, $meta) = @_;
+                if (defined $chunk) {
+                    $decoder->($chunk);
+                } else {
+                    if ($meta && $meta->{Status} && $meta->{Status} >= 400) {
+                        $stream->push_chunk({ error => $meta->{Reason} });
+                    }
+                    $stream->finish;
+                }
+            },
+        );
+
+        $stream->guard($guard);
+        return $stream;
+    }
+
     my $response = $self->client->request(
         'POST',
         '/v1/chat/completions',
         %request_opts,
         json => \%body,
     );
-
-    if ($body{stream}) {
-        my $events = to_stream_events($response->{content});
-        return Dedalus::Stream->new(events => $events);
-    }
 
     my $data = $response->{data} || {};
     return Dedalus::Types::Chat::Completion->from_hash($data);
