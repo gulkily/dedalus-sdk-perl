@@ -10,6 +10,8 @@ isa_ok($client->chat, 'Dedalus::Async::Chat');
 isa_ok($client->audio, 'Dedalus::Async::Audio');
 isa_ok($client->embeddings, 'Dedalus::Async::Embeddings');
 isa_ok($client->images, 'Dedalus::Async::Images');
+isa_ok($client->models, 'Dedalus::Async::Models');
+isa_ok($client->health, 'Dedalus::Async::Health');
 
 my $mock = Test::MockModule->new('Dedalus::Async::Client');
 $mock->redefine('request_future', sub {
@@ -40,6 +42,15 @@ $mock->redefine('request_future', sub {
     }
     if ($path =~ /\/v1\/images\//) {
         return Future->done({ status => 200, headers => {}, data => { created => 123, data => [ { url => 'https://example' } ] } });
+    }
+    if ($path eq '/v1/models' && $method eq 'GET') {
+        return Future->done({ status => 200, headers => {}, data => { object => 'list', data => [ { id => 'm1', object => 'model', owned_by => 'openai' } ] } });
+    }
+    if ($path eq '/v1/models/m1' && $method eq 'GET') {
+        return Future->done({ status => 200, headers => {}, data => { id => 'm1', object => 'model', owned_by => 'openai' } });
+    }
+    if ($path eq '/health') {
+        return Future->done({ status => 200, headers => {}, data => { status => 'ok' } });
     }
     die "unexpected path $path";
 });
@@ -81,5 +92,14 @@ isa_ok($embed_future->get, 'Dedalus::Types::CreateEmbeddingResponse');
 
 my $image_future = $client->images->generate(prompt => 'A cat');
 isa_ok($image_future->get, 'Dedalus::Types::ImagesResponse');
+
+my $models_future = $client->models->list;
+isa_ok($models_future->get, 'Dedalus::Types::ListModelsResponse');
+
+my $model_future = $client->models->retrieve('m1');
+isa_ok($model_future->get, 'Dedalus::Types::Model');
+
+my $health_future = $client->health->check;
+isa_ok($health_future->get, 'Dedalus::Types::HealthCheckResponse');
 
 done_testing;

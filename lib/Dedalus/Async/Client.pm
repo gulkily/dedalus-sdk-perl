@@ -10,6 +10,8 @@ use Dedalus::Async::Chat;
 use Dedalus::Async::Audio;
 use Dedalus::Async::Embeddings;
 use Dedalus::Async::Images;
+use Dedalus::Async::Models;
+use Dedalus::Async::Health;
 
 has config => (
     is       => 'ro',
@@ -46,6 +48,18 @@ has images => (
     builder => '_build_async_images',
 );
 
+has models => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_models',
+);
+
+has health => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_health',
+);
+
 sub _build_http {
     my ($self) = @_;
     return Dedalus::HTTP->new(config => $self->config);
@@ -69,6 +83,16 @@ sub _build_async_embeddings {
 sub _build_async_images {
     my ($self) = @_;
     return Dedalus::Async::Images->new(client => $self);
+}
+
+sub _build_models {
+    my ($self) = @_;
+    return Dedalus::Async::Models->new(client => $self);
+}
+
+sub _build_health {
+    my ($self) = @_;
+    return Dedalus::Async::Health->new(client => $self);
 }
 
 around BUILDARGS => sub {
