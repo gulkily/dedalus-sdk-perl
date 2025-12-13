@@ -8,5 +8,6 @@ use Dedalus::Types::Chat::Completion;
 use Dedalus::Types::Model;
 use Dedalus::Types::ListModelsResponse;
 use Dedalus::Types::CreateEmbeddingResponse;
+use Dedalus::Types::Audio::TranscriptionCreateResponse;
 
 1;

@@ -8,6 +8,7 @@ use Dedalus::Resources::Health;
 use Dedalus::Resources::Chat;
 use Dedalus::Resources::Models;
 use Dedalus::Resources::Embeddings;
+use Dedalus::Resources::Audio;
 
 has config => (
     is       => 'ro',
@@ -44,6 +45,12 @@ has embeddings => (
     builder => '_build_embeddings_resource',
 );
 
+has audio => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_audio_resource',
+);
+
 sub _build_http {
     my ($self) = @_;
     return Dedalus::HTTP->new(config => $self->config);
@@ -67,6 +74,11 @@ sub _build_models_resource {
 sub _build_embeddings_resource {
     my ($self) = @_;
     return Dedalus::Resources::Embeddings->new(client => $self);
+}
+
+sub _build_audio_resource {
+    my ($self) = @_;
+    return Dedalus::Resources::Audio->new(client => $self);
 }
 
 around BUILDARGS => sub {

@@ -57,4 +57,13 @@ perl examples/create_embedding.pl
 
 Override `DEDALUS_EMBEDDING_MODEL` or `DEDALUS_EMBEDDING_INPUT` to customize the request. The script prints the embedding dimensions returned by the API.
 
+### Audio transcription
+
+```
+export DEDALUS_API_KEY=sk-...
+perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $resp = $c->audio->transcriptions->create(model => "openai/whisper-1", file => \"./path/to/audio.wav\"); print $resp->text, "\n";'
+```
+
+You can pass a scalar reference containing audio bytes or a tuple `[ $filename, $content, $content_type ]` to control upload metadata.
+
 Additional details will be added as the SDK implementation evolves.
