@@ -48,4 +48,13 @@ perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $models = $c->models->list;
 
 Use `models->retrieve($id)` to inspect capabilities and defaults for a specific model.
 
+### Creating embeddings
+
+```
+export DEDALUS_API_KEY=sk-...
+perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $resp = $c->embeddings->create(model => "text-embedding-3-small", input => "hello world"); print scalar(@{$resp->data}), " embedding returned\n";'
+```
+
+The response includes vectors in `$resp->data->[0]->embedding` and token usage in `$resp->usage`.
+
 Additional details will be added as the SDK implementation evolves.

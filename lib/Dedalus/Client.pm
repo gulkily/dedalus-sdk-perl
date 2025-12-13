@@ -7,6 +7,7 @@ use Dedalus::HTTP;
 use Dedalus::Resources::Health;
 use Dedalus::Resources::Chat;
 use Dedalus::Resources::Models;
+use Dedalus::Resources::Embeddings;
 
 has config => (
     is       => 'ro',
@@ -37,6 +38,12 @@ has models => (
     builder => '_build_models_resource',
 );
 
+has embeddings => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_embeddings_resource',
+);
+
 sub _build_http {
     my ($self) = @_;
     return Dedalus::HTTP->new(config => $self->config);
@@ -55,6 +62,11 @@ sub _build_chat_resource {
 sub _build_models_resource {
     my ($self) = @_;
     return Dedalus::Resources::Models->new(client => $self);
+}
+
+sub _build_embeddings_resource {
+    my ($self) = @_;
+    return Dedalus::Resources::Embeddings->new(client => $self);
 }
 
 around BUILDARGS => sub {
