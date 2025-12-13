@@ -6,8 +6,7 @@ Current priorities (see `CHECKLIST.md` / `PLAN.md` / `README.md` / `api.md` for 
 
 1. Flesh out type coverage and validation helpers under `lib/Dedalus/Types/*` so request/response models match the Python SDK (`_models.py`).
 2. Port remaining resources from `dedalus-sdk-python` (assistants, threads, responses, fine-tuning/batches/vector stores, etc.) with async parity.
-3. Mirror `_files.py` behavior (streaming handles, metadata, better detection) and expand file helper ergonomics.
-4. Build out the testing strategy (behavior-driven coverage, golden fixtures, streaming tests) and add CI + release tooling parity.
+3. Build out the testing strategy (behavior-driven coverage, golden fixtures, streaming tests) and add CI + release tooling parity.
 
 Loop guidance:
 - Run `git status` before/after each session (repo should be clean aside from personal assets like `examples/gdi_exclamation.wav`).

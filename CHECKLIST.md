@@ -34,10 +34,10 @@
 - [x] Add streaming and async support
   - [x] Implement SSE streaming helpers
   - [x] Provide `Dedalus::Async` built on async primitives
-  - [ ] Mirror `_files.py` behavior: automatic filenames/content-types, streaming handles, metadata passthrough
-  - [ ] Expose ergonomic helpers for file uploads in user-facing APIs
 - [ ] Handle file uploads and multipart logic
-  - [ ] Port `_files.py` behaviors for IO handles, metadata
+  - [x] Mirror `_files.py` behavior: automatic filenames/content-types, streaming handles, metadata passthrough
+  - [x] Expose ergonomic helpers for file uploads in user-facing APIs
+  - [x] Port `_files.py` behaviors for IO handles, metadata
 - [ ] Build testing strategy
   - [ ] Port behavior-driven tests using Perl testing frameworks
   - [ ] Stub HTTP interactions and add smoke/golden tests

@@ -136,14 +136,16 @@ Additional details will be added as the SDK implementation evolves.
 export DEDALUS_API_KEY=sk-...
 perl -Ilib -e '
     use Dedalus;
+    use Dedalus::FileUpload;
     my $client = Dedalus->new;
     my $file = $client->files->upload(
         purpose => "fine-tune",
-        file    => \"training data",
+        file    => Dedalus::FileUpload->from_path("training.jsonl"),
+        metadata => { note => "demo" },
     );
     my $download = $client->files->content->retrieve($file->id);
     print length($download->{content}), " bytes saved\n";
 '
 ```
 
-`files->list` and `files->retrieve($id)` return typed `Dedalus::Types::FileObject` instances so you can inspect metadata before downloading content.
+`Dedalus::FileUpload` also accepts in-memory scalars or IO handles so you can stream data directly without writing temp files. `files->list` and `files->retrieve($id)` return typed `Dedalus::Types::FileObject` instances so you can inspect metadata before downloading content.
