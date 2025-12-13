@@ -42,7 +42,7 @@
   - [ ] Port behavior-driven tests using Perl testing frameworks
   - [ ] Stub HTTP interactions and add smoke/golden tests
   - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
-  - [ ] Add async/sync parity tests and streaming fixtures
+  - [x] Add async/sync parity tests and streaming fixtures
 - [ ] Configure tooling, CI, and release automation
   - [ ] Add lint/format tooling and CI workflows
   - [ ] Mirror Python release tooling (version bump automation, package publish scripts)
