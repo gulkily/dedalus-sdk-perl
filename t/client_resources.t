@@ -1,0 +1,12 @@
+use Test2::V0;
+use Dedalus;
+
+local $ENV{DEDALUS_API_KEY} = 'test-key';
+my $client = Dedalus->new();
+
+isa_ok($client->chat, 'Dedalus::Resources::Chat');
+isa_ok($client->chat->completions, 'Dedalus::Resources::Chat::Completions');
+
+ok(1, 'chat resource wired');
+
+done_testing;
