@@ -17,8 +17,11 @@
   - [x] Implement sync HTTP layer with retries, serialization, multipart
   - [x] Create `Dedalus::Client` wrapper exposing resources
 - [ ] Define data models and serialization utilities
-  - [ ] Port shared request/response types under `lib/Dedalus/Types/*`
-  - [ ] Add model coercion, validation, and file helpers
+  - [ ] Port shared request/response types under `lib/Dedalus/Types/*` (chat, audio, image, assistants, files, vector stores, etc.)
+  - [ ] Add model coercion, validation, and file helpers (mirroring `_models.py`)
+  - [ ] Ensure generated types stay in sync with Python regeneration tooling
+  - [ ] Implement remaining resources from dedalus-sdk-python (assistants, threads, responses, vector stores, batches, fine-tunes, files management, etc.)
+  - [ ] Keep async modules in parity with sync resources
 - [ ] Implement resource modules (API surface)
   - [x] Implement `health` resource and integration example
   - [x] Implement `models` resource (list & retrieve)
@@ -31,11 +34,16 @@
 - [x] Add streaming and async support
   - [x] Implement SSE streaming helpers
   - [x] Provide `Dedalus::Async` built on async primitives
+  - [ ] Mirror `_files.py` behavior: automatic filenames/content-types, streaming handles, metadata passthrough
+  - [ ] Expose ergonomic helpers for file uploads in user-facing APIs
 - [ ] Handle file uploads and multipart logic
   - [ ] Port `_files.py` behaviors for IO handles, metadata
 - [ ] Build testing strategy
   - [ ] Port behavior-driven tests using Perl testing frameworks
   - [ ] Stub HTTP interactions and add smoke/golden tests
+  - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
+  - [ ] Add async/sync parity tests and streaming fixtures
 - [ ] Configure tooling, CI, and release automation
   - [ ] Add lint/format tooling and CI workflows
+  - [ ] Mirror Python release tooling (version bump automation, package publish scripts)
   - [ ] Document release process (Changes, tagging, CPAN upload)

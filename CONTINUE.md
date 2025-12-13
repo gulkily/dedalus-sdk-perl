@@ -1,10 +1,15 @@
 # Continuation notes
 
-Async coverage now includes models, health checks, and sample scripts for embeddings/images. Remaining focus areas from `CHECKLIST.md`:
+Async coverage now includes models, health checks, files, and sample scripts for embeddings/images. Use this file as the hand-off loop: before you pause, summarize status + next steps here; when you resume, read and update it.
 
-1. Finish "Support nested sub-resources and consistent signatures" by reviewing remaining resources in the Python SDK (chat submodules, potential files endpoints).
-2. Tackle other checklist items: file helper parity is mostly done via `Dedalus::Util::Multipart`, but we still need CI/tooling, additional tests, and release documentation.
+Current priorities (see `CHECKLIST.md` / `PLAN.md` / `README.md` / `api.md` for context):
 
-Consider adding async wrappers for any new resources you implement going forward so parity stays intact.
+1. Flesh out type coverage and validation helpers under `lib/Dedalus/Types/*` so request/response models match the Python SDK (`_models.py`).
+2. Port remaining resources from `dedalus-sdk-python` (assistants, threads, responses, fine-tuning/batches/vector stores, etc.) with async parity.
+3. Mirror `_files.py` behavior (streaming handles, metadata, better detection) and expand file helper ergonomics.
+4. Build out the testing strategy (behavior-driven coverage, golden fixtures, streaming tests) and add CI + release tooling parity.
 
-When resuming, run `git status` (repo clean except for personal files like `examples/gdi_exclamation.wav`) and refer to `PLAN.md` / `CHECKLIST.md` to choose the next task.
+Loop guidance:
+- Run `git status` before/after each session (repo should be clean aside from personal assets like `examples/gdi_exclamation.wav`).
+- Reference `PLAN.md`, `CHECKLIST.md`, `README.md`, and `api.md` each time you start a new chunk of work to stay aligned.
+- Keep async + sync resources in lockstep; add tests/examples/docs for every new feature.
