@@ -43,7 +43,7 @@ The script sends a `chat.completions.create` request and prints the assistant's 
 
 ```
 export DEDALUS_API_KEY=sk-...
-perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $models = $c->models->list; print scalar(@{$models->data}), " models available\n";'
+perl examples/list_models.pl
 ```
 
 Use `models->retrieve($id)` to inspect capabilities and defaults for a specific model.
@@ -61,9 +61,9 @@ Override `DEDALUS_EMBEDDING_MODEL` or `DEDALUS_EMBEDDING_INPUT` to customize the
 
 ```
 export DEDALUS_API_KEY=sk-...
-perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $resp = $c->audio->transcriptions->create(model => "openai/whisper-1", file => \"./path/to/audio.wav\"); print $resp->text, "\n";'
+perl examples/audio_transcription.pl /path/to/audio.wav
 ```
 
-You can pass a scalar reference containing audio bytes or a tuple `[ $filename, $content, $content_type ]` to control upload metadata.
+Set `DEDALUS_AUDIO_FILE` or pass the file path as the first argument. Override `DEDALUS_TRANSCRIPTION_MODEL` to choose a different Whisper-compatible ID. The script prints the transcript returned by the API.
 
 Additional details will be added as the SDK implementation evolves.
