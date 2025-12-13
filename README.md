@@ -65,7 +65,12 @@ perl -Ilib -MDedalus::Async -MFuture -e '
 '
 ```
 
-Async wrappers currently cover chat completions plus audio, embeddings, and image endpoints.
+Async wrappers currently cover chat completions plus audio, embeddings, and image endpoints. Sample scripts:
+
+```
+perl examples/async_chat_completion.pl "Prompt here"
+perl examples/async_audio_transcription.pl /path/to/audio.wav
+```
 
 ### Listing models
 
