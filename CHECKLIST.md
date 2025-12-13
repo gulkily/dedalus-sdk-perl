@@ -1,0 +1,34 @@
+# Dedalus Perl SDK implementation checklist
+
+- [x] Audit Python template and capture requirements
+  - [x] Review `README.md`, `api.md`, `pyproject.toml`, and `src/dedalus_labs`
+  - [x] Enumerate public APIs and shared models
+  - [x] Note cross-cutting helpers (retries, multipart, query serialization)
+- [ ] Bootstrap Perl distribution skeleton
+  - [x] Set up CPAN-style layout (`lib/`, `t/`, `script/`, etc.)
+  - [x] Choose build/dependency tooling and capture metadata
+  - [x] Port docs into Perl-centric `README.md` and stub `api.md`
+- [ ] Implement configuration, auth, and environment handling
+  - [x] Add `Dedalus::Config` with env + version info
+  - [x] Create `Dedalus::Exception` hierarchy
+- [ ] Build HTTP client abstraction
+  - [x] Implement sync HTTP layer with retries, serialization, multipart
+  - [x] Create `Dedalus::Client` wrapper exposing resources
+- [ ] Define data models and serialization utilities
+  - [ ] Port shared request/response types under `lib/Dedalus/Types/*`
+  - [ ] Add model coercion, validation, and file helpers
+- [ ] Implement resource modules (API surface)
+  - [x] Implement `health` resource and integration example
+  - [ ] Mirror Python resource namespaces (chat, audio, files, etc.)
+  - [ ] Support nested sub-resources and consistent signatures
+- [ ] Add streaming and async support
+  - [ ] Implement SSE streaming helpers
+  - [ ] Provide `Dedalus::Async` built on async primitives
+- [ ] Handle file uploads and multipart logic
+  - [ ] Port `_files.py` behaviors for IO handles, metadata
+- [ ] Build testing strategy
+  - [ ] Port behavior-driven tests using Perl testing frameworks
+  - [ ] Stub HTTP interactions and add smoke/golden tests
+- [ ] Configure tooling, CI, and release automation
+  - [ ] Add lint/format tooling and CI workflows
+  - [ ] Document release process (Changes, tagging, CPAN upload)
