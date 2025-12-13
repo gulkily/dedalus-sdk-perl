@@ -4,6 +4,8 @@ use warnings;
 
 use Dedalus;
 
+binmode STDOUT, ':encoding(UTF-8)';
+
 my $client = Dedalus->new();
 
 my $stream = $client->chat->completions->create(

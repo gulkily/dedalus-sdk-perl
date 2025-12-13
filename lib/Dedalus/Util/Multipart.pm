@@ -5,6 +5,7 @@ use warnings;
 use Exporter 'import';
 use Digest::MD5 qw(md5_hex);
 use File::Basename qw(basename);
+use Scalar::Util qw(blessed);
 
 our @EXPORT_OK = qw(normalize_file_field build_multipart_body);
 
@@ -20,6 +21,9 @@ sub normalize_file_field {
         ($filename, $content, $content_type) = @$value;
     } elsif (ref $value eq 'SCALAR') {
         $content  = $$value;
+        $filename = $default_filename || 'upload.dat';
+    } elsif (blessed($value) && $value->can('slurp_raw')) {
+        $content  = $value->slurp_raw;
         $filename = $default_filename || 'upload.dat';
     } else {
         $filename = basename($value);
