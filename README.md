@@ -11,11 +11,12 @@ The first resource implemented is the `health` endpoint so we can exercise an en
 ## Development
 
 ```
+cpanm --installdeps .
 perl Makefile.PL
 make test
 ```
 
-> Tests currently rely on `Test2::V0`. Install dependencies listed in `cpanfile` or via `cpanm --installdeps .`.
+> Tests currently rely on `Test2::V0`. Run `cpanm --installdeps .` to install the dependencies listed in `cpanfile` (AnyEvent, AnyEvent::HTTP, Mojolicious, etc.).
 
 ## Quick API check
 
