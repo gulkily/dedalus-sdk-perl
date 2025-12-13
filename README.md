@@ -52,9 +52,9 @@ Use `models->retrieve($id)` to inspect capabilities and defaults for a specific 
 
 ```
 export DEDALUS_API_KEY=sk-...
-perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $resp = $c->embeddings->create(model => "text-embedding-3-small", input => "hello world"); print scalar(@{$resp->data}), " embedding returned\n";'
+perl examples/create_embedding.pl
 ```
 
-The response includes vectors in `$resp->data->[0]->embedding` and token usage in `$resp->usage`.
+Override `DEDALUS_EMBEDDING_MODEL` or `DEDALUS_EMBEDDING_INPUT` to customize the request. The script prints the embedding dimensions returned by the API.
 
 Additional details will be added as the SDK implementation evolves.
