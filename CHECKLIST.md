@@ -1,5 +1,7 @@
 # Dedalus Perl SDK implementation checklist
 
+> Reminder: make a git commit immediately after checking any item below.
+
 - [x] Audit Python template and capture requirements
   - [x] Review `README.md`, `api.md`, `pyproject.toml`, and `src/dedalus_labs`
   - [x] Enumerate public APIs and shared models
