@@ -28,4 +28,15 @@ perl examples/health_check.pl
 
 This script calls `GET /health` and prints the response status to confirm connectivity.
 
+### Chat completion example
+
+After the health check works, try a simple chat completion:
+
+```
+export DEDALUS_API_KEY=sk-...
+perl examples/chat_completion.pl
+```
+
+The script sends a `chat.completions.create` request and prints the assistant's response. Set `DEDALUS_MODEL` to target a specific model ID if needed.
+
 Additional details will be added as the SDK implementation evolves.
