@@ -49,6 +49,24 @@ perl examples/chat_stream_live.pl "Hello, how do you feel today?"
 
 Chunks print as soon as they arrive. The underlying `Dedalus::Stream` object yields decoded SSE payloads until the `[DONE]` sentinel is reached.
 
+### Async usage
+
+The async client returns `Future` instances so you can compose or await results:
+
+```
+perl -Ilib -MDedalus::Async -MFuture -e '
+    my $client = Dedalus::Async->new;
+    my $f = $client->chat->completions->create(
+        model    => "openai/gpt-5-nano",
+        messages => [{ role => "user", content => "Hi" }],
+    );
+    my $completion = $f->get;
+    print $completion->model, "\n";
+'
+```
+
+Async wrappers currently cover chat completions and audio endpoints.
+
 ### Listing models
 
 ```

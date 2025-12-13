@@ -6,6 +6,8 @@ use AnyEvent;
 
 use Dedalus::Config;
 use Dedalus::HTTP;
+use Dedalus::Async::Chat;
+use Dedalus::Async::Audio;
 
 has config => (
     is       => 'ro',
@@ -18,9 +20,31 @@ has http => (
     builder => '_build_http',
 );
 
+has chat => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_chat',
+);
+
+has audio => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_audio',
+);
+
 sub _build_http {
     my ($self) = @_;
     return Dedalus::HTTP->new(config => $self->config);
+}
+
+sub _build_chat {
+    my ($self) = @_;
+    return Dedalus::Async::Chat->new(client => $self);
+}
+
+sub _build_audio {
+    my ($self) = @_;
+    return Dedalus::Async::Audio->new(client => $self);
 }
 
 around BUILDARGS => sub {

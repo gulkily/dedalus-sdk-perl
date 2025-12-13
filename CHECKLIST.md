@@ -26,9 +26,9 @@
   - [x] Implement `audio.translations` + `audio.speech` resources
   - [x] Mirror Python resource namespaces (chat, audio, files, etc.)
   - [ ] Support nested sub-resources and consistent signatures
-- [ ] Add streaming and async support
-  - [ ] Implement SSE streaming helpers
-  - [ ] Provide `Dedalus::Async` built on async primitives
+- [x] Add streaming and async support
+  - [x] Implement SSE streaming helpers
+  - [x] Provide `Dedalus::Async` built on async primitives
 - [ ] Handle file uploads and multipart logic
   - [ ] Port `_files.py` behaviors for IO handles, metadata
 - [ ] Build testing strategy
