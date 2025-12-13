@@ -66,6 +66,22 @@ perl examples/audio_transcription.pl /path/to/audio.wav
 
 Set `DEDALUS_AUDIO_FILE` or pass the file path as the first argument. Override `DEDALUS_TRANSCRIPTION_MODEL` to choose a different Whisper-compatible ID. The script prints the transcript returned by the API.
 
+### Audio translation
+
+Use the same API entry point but target `/audio/translations` when you need English output:
+
+```
+perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $resp = $c->audio->translations->create(model => "openai/whisper-1", file => \"./path/to/audio.wav\"); print $resp->text, "\n";'
+```
+
+### Text-to-speech
+
+```
+perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $resp = $c->audio->speech->create(model => "openai/tts-1", input => "Hello Dedalus", voice => "alloy"); print length($resp->{content}), " bytes received\n";'
+```
+
+Set `response_format` to `mp3`, `wav`, etc., as needed. The return value is a hash with `content`, `headers`, and `status` so you can write the binary blob to disk.
+
 ### Image generation
 
 ```
