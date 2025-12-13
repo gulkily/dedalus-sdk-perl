@@ -8,7 +8,7 @@ Current priorities (see `CHECKLIST.md` / `PLAN.md` / `README.md` / `api.md` for 
 2. Port remaining resources from `dedalus-sdk-python` (assistants, threads, responses, fine-tuning/batches/vector stores, etc.) with async parity.
 3. Build out the testing strategy (behavior-driven coverage, golden fixtures, streaming tests) and add CI + release tooling parity.
 
-Recent progress: file upload helpers now mirror `_files.py` (via `Dedalus::FileUpload`), and async/sync parity tests cover embeddings plus streaming chat payloads.
+Recent progress: file upload helpers now mirror `_files.py` (via `Dedalus::FileUpload`), async/sync parity tests cover embeddings plus streaming chat payloads, and CI now runs lint + tests across Perl 5.36/5.38.
 
 Loop guidance:
 - Run `git status` before/after each session (repo should be clean aside from personal assets like `examples/gdi_exclamation.wav`).

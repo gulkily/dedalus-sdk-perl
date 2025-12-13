@@ -1,0 +1,6 @@
+severity = 4
+verbose = 10
+
+[TestingAndDebugging::RequireUseWarnings]
+[TestingAndDebugging::RequireUseStrict]
+[Modules::RequireFilenameMatchesPackage]

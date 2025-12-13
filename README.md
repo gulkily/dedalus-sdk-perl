@@ -18,6 +18,10 @@ make test
 
 > Tests currently rely on `Test2::V0`. Run `cpanm --installdeps .` to install the dependencies listed in `cpanfile` (AnyEvent, AnyEvent::HTTP, Mojolicious, etc.).
 
+### Linting & CI
+
+Run `script/lint.sh` to execute `perlcritic` and ensure files are formatted according to `.perltidyrc`. GitHub Actions (see `.github/workflows/ci.yml`) installs dependencies for Perl 5.36/5.38, runs `make test`, and enforces the lint pipeline on every push/PR.
+
 ## Quick API check
 
 Set `DEDALUS_API_KEY` and run the example script:

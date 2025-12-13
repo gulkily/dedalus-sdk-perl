@@ -15,3 +15,8 @@ on 'test' => sub {
     requires 'Test2::V0';
     requires 'Test::MockModule';
 };
+
+on 'develop' => sub {
+    requires 'Perl::Critic';
+    requires 'Perl::Tidy';
+};
