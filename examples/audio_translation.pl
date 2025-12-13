@@ -3,11 +3,21 @@ use strict;
 use warnings;
 
 use Dedalus;
+use Getopt::Long qw(GetOptions);
 
-my $file = shift @ARGV // $ENV{DEDALUS_AUDIO_FILE}
-  or die "Usage: DEDALUS_AUDIO_FILE=path perl examples/audio_translation.pl\n";
-
+my $file;
 my $model = $ENV{DEDALUS_TRANSLATION_MODEL} // 'openai/whisper-1';
+
+GetOptions(
+    'file=s'  => \$file,
+    'model=s' => \$model,
+);
+
+$file ||= shift @ARGV;
+$file ||= $ENV{DEDALUS_AUDIO_FILE};
+
+die "Usage: perl examples/audio_translation.pl --file path/to/audio.wav\n"
+  unless $file;
 
 my $client = Dedalus->new();
 
