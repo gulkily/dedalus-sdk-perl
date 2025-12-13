@@ -71,13 +71,15 @@ Set `DEDALUS_AUDIO_FILE` or pass the file path as the first argument. Override `
 Use the same API entry point but target `/audio/translations` when you need English output:
 
 ```
-perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $resp = $c->audio->translations->create(model => "openai/whisper-1", file => \"./path/to/audio.wav\"); print $resp->text, "\n";'
+export DEDALUS_API_KEY=sk-...
+perl examples/audio_translation.pl /path/to/audio.wav
 ```
 
 ### Text-to-speech
 
 ```
-perl -Ilib -e 'use Dedalus; my $c = Dedalus->new; my $resp = $c->audio->speech->create(model => "openai/tts-1", input => "Hello Dedalus", voice => "alloy"); print length($resp->{content}), " bytes received\n";'
+export DEDALUS_API_KEY=sk-...
+perl examples/text_to_speech.pl "Hello Dedalus" output.mp3
 ```
 
 Set `response_format` to `mp3`, `wav`, etc., as needed. The return value is a hash with `content`, `headers`, and `status` so you can write the binary blob to disk.

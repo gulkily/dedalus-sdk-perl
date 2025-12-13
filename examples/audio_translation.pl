@@ -1,0 +1,20 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use Dedalus;
+
+my $file = shift @ARGV // $ENV{DEDALUS_AUDIO_FILE}
+  or die "Usage: DEDALUS_AUDIO_FILE=path perl examples/audio_translation.pl\n";
+
+my $model = $ENV{DEDALUS_TRANSLATION_MODEL} // 'openai/whisper-1';
+
+my $client = Dedalus->new();
+
+my $response = $client->audio->translations->create(
+    model => $model,
+    file  => $file,
+);
+
+print "Model: $model\n";
+print "Transcript:\n" . $response->text . "\n";
