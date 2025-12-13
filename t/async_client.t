@@ -8,6 +8,8 @@ my $client = Dedalus::Async->new(api_key => 'test');
 isa_ok($client, 'Dedalus::Async::Client');
 isa_ok($client->chat, 'Dedalus::Async::Chat');
 isa_ok($client->audio, 'Dedalus::Async::Audio');
+isa_ok($client->embeddings, 'Dedalus::Async::Embeddings');
+isa_ok($client->images, 'Dedalus::Async::Images');
 
 my $mock = Test::MockModule->new('Dedalus::Async::Client');
 $mock->redefine('request_future', sub {
@@ -32,6 +34,12 @@ $mock->redefine('request_future', sub {
     }
     if ($path eq '/v1/audio/speech') {
         return Future->done({ status => 200, headers => {}, content => 'mp3data' });
+    }
+    if ($path eq '/v1/embeddings') {
+        return Future->done({ status => 200, headers => {}, data => { data => [ { embedding => [0.1], index => 0 } ], model => 'text-embedding-3-small', usage => {} } });
+    }
+    if ($path =~ /\/v1\/images\//) {
+        return Future->done({ status => 200, headers => {}, data => { created => 123, data => [ { url => 'https://example' } ] } });
     }
     die "unexpected path $path";
 });
@@ -64,5 +72,14 @@ my $speech_future = $client->audio->speech->create(
 );
 my $speech = $speech_future->get;
 is($speech->{content}, 'mp3data', 'speech future returns payload');
+
+my $embed_future = $client->embeddings->create(
+    model => 'text-embedding-3-small',
+    input => 'hello',
+);
+isa_ok($embed_future->get, 'Dedalus::Types::CreateEmbeddingResponse');
+
+my $image_future = $client->images->generate(prompt => 'A cat');
+isa_ok($image_future->get, 'Dedalus::Types::ImagesResponse');
 
 done_testing;

@@ -8,6 +8,8 @@ use Dedalus::Config;
 use Dedalus::HTTP;
 use Dedalus::Async::Chat;
 use Dedalus::Async::Audio;
+use Dedalus::Async::Embeddings;
+use Dedalus::Async::Images;
 
 has config => (
     is       => 'ro',
@@ -32,6 +34,18 @@ has audio => (
     builder => '_build_audio',
 );
 
+has embeddings => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_async_embeddings',
+);
+
+has images => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_async_images',
+);
+
 sub _build_http {
     my ($self) = @_;
     return Dedalus::HTTP->new(config => $self->config);
@@ -45,6 +59,16 @@ sub _build_chat {
 sub _build_audio {
     my ($self) = @_;
     return Dedalus::Async::Audio->new(client => $self);
+}
+
+sub _build_async_embeddings {
+    my ($self) = @_;
+    return Dedalus::Async::Embeddings->new(client => $self);
+}
+
+sub _build_async_images {
+    my ($self) = @_;
+    return Dedalus::Async::Images->new(client => $self);
 }
 
 around BUILDARGS => sub {
