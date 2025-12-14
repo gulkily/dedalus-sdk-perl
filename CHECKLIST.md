@@ -19,6 +19,8 @@
 - [ ] Define data models and serialization utilities
   - [ ] Port shared request/response types under `lib/Dedalus/Types/*` (chat, audio, image, assistants, files, vector stores, etc.)
   - [x] Add model coercion, validation, and file helpers (mirroring `_models.py`)
+  - [ ] Add streaming chunk types (chat/response SSE payloads) per `docs/api/schemas.md`
+  - [ ] Model structured outputs (`responses` blocks, tool calls, image/audio payloads)
   - [ ] Ensure generated types stay in sync with Python regeneration tooling
   - [ ] Implement remaining resources from dedalus-sdk-python (assistants, threads, responses, vector stores, batches, fine-tunes, files management, etc.)
   - [ ] Keep async modules in parity with sync resources
@@ -32,6 +34,7 @@
   - [x] Mirror Python resource namespaces (chat, audio, files, etc.)
   - [x] Support nested sub-resources and consistent signatures
   - [x] Implement `responses` resource (create & retrieve)
+  - [ ] Add `responses` streaming helpers + structured-output utilities (per docs)
 - [x] Add streaming and async support
   - [x] Implement SSE streaming helpers
   - [x] Provide `Dedalus::Async` built on async primitives
@@ -44,6 +47,7 @@
   - [ ] Stub HTTP interactions and add smoke/golden tests
   - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
   - [x] Add async/sync parity tests and streaming fixtures
+  - [ ] Add structured-output fixtures (responses/tool calling) and SSE chunk tests
 - [ ] Configure tooling, CI, and release automation
   - [x] Add lint/format tooling and CI workflows
   - [ ] Mirror Python release tooling (version bump automation, package publish scripts)

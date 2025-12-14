@@ -22,27 +22,29 @@ This plan mirrors the structure and functionality of `~/dedalus-sdk-python` whil
 - Define a thin `Dedalus::Client` wrapper that instantiates the HTTP layer, exposes `resources` accessors, and normalizes responses into Perl data structures or typed objects.
 
 ## 5. Data models and serialization utilities
-- Translate the shared request/response types present under `src/dedalus_labs/types` into Perl packages (likely using `Moo` + `Types::Standard`) housed in `lib/Dedalus/Types/*`.
+- Translate the shared request/response types present under `src/dedalus_labs/types` (and documented in `docs/api/schemas.md`) into Perl packages (likely using `Moo` + `Types::Standard`) housed in `lib/Dedalus/Types/*`. Cover chat completions, streaming chunks, responses structured outputs, audio/image payloads, etc.
 - Provide helpers equivalent to `_models.py` for coercing hashrefs into typed objects, deep copying, validation of required params, and file abstractions (`Dedalus::FileUpload`).
-- Document the mapping rules between JSON payloads and Perl objects so future regeneration from Stainless/OpenAPI is straightforward.
+- Document the mapping rules between JSON payloads and Perl objects so future regeneration from Stainless/OpenAPI is straightforward. Cite mirrored docs in `docs/` when describing schemas.
 
 ## 6. Resource modules (API surface)
-- For each resource directory in the Python template (`resources/chat`, `resources/audio`, `resources/files`, etc.), create a mirrored Perl namespace (e.g., `Dedalus::Resources::Chat`).
-- Implement methods for each endpoint described in `api.md`, ensuring method signatures (required/optional params) and return structures stay consistent with the Python SDK.
-- Support nested sub-resources (e.g., `chat.completions.create`) via composable classes or method chaining so the calling style matches `Dedalus->new->chat->completions->create(...)`.
+- For each resource directory in the Python template (`resources/chat`, `resources/audio`, `resources/files`, `resources/responses`, etc.), create a mirrored Perl namespace (e.g., `Dedalus::Resources::Chat`).
+- Implement methods for each endpoint described in `api.md` / `docs/api-reference/v1/*`, ensuring method signatures (required/optional params) and return structures stay consistent with the Python SDK / canonical docs.
+- Support nested sub-resources (e.g., `chat.completions.create`, `responses.stream`) via composable classes or method chaining so the calling style matches `Dedalus->new->chat->completions->create(...)`. Expose raw/streaming wrappers similar to the Python SDK.
 
 ## 7. Streaming & async support
-- Implement Server-Sent Events streaming similar to `src/dedalus_labs/_streaming.py`, likely using `Mojo::UserAgent` or `AnyEvent::HTTP` to yield incremental chunks while decoding event payloads.
+- Implement Server-Sent Events streaming similar to `src/dedalus_labs/_streaming.py`, likely using `Mojo::UserAgent` or `AnyEvent::HTTP` to yield incremental chunks while decoding event payloads (see `docs/sdk/streaming.md`).
 - Provide `Dedalus::Async` built on `Mojo::Promise`/`Future::AsyncAwait` so async consumers can await the same resource methods (mirroring `AsyncDedalus` in the Python template). Share serialization code between sync and async clients to avoid drift.
+- Extend streaming helpers beyond chat (e.g., responses streaming once documented) and ensure SSE chunk parsing matches the schemas captured in `docs/api-reference/v1/create-chat-completion.md`.
 
 ## 8. File uploads and multipart handling
-- Port the logic from `_files.py` to detect file-like params, stream bodies from disk/handles, and include filenames + content types in multipart requests.
-- Add high-level helpers for reading from scalar refs or tempfiles, ensuring compatibility with Perl’s IO handles.
+- Port the logic from `_files.py` to detect file-like params, stream bodies from disk/handles, and include filenames + content types in multipart requests (done via `Dedalus::FileUpload`).
+- Add high-level helpers for reading from scalar refs or tempfiles, ensuring compatibility with Perl’s IO handles. Reference `docs/api-reference/v1/create-transcription.md` / `create-translation.md` for accepted formats and metadata.
 
 ## 9. Testing strategy
 - Recreate the behavior-driven tests that exist under `tests/` in the Python repo using `Test2::V0`/`Test::More`. Cover client initialization, parameter validation, query serialization, streaming iteration, error translation, and multipart boundaries.
 - Stub HTTP interactions with `Test::HTTP::LocalServer` or `Test::Mojo` fixtures so tests remain offline and deterministic.
 - Provide smoke tests for sync and async clients, plus golden tests for request bodies derived from fixtures that match `tests/api_resources/*` in the Python template.
+- Add structured-output fixtures (responses/tool calling), SSE chunk snapshots, and environment override tests per the docs.
 
 ## 10. Tooling, CI, and release automation
 - Configure linting/formatting (`Perl::Critic`, `perltidy`) similar to how the Python repo uses `nox` sessions.
