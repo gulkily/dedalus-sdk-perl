@@ -37,6 +37,16 @@ perl examples/health_check.pl
 
 This script calls `GET /health` and prints the response status to confirm connectivity.
 
+### Environment selection
+
+By default the SDK targets the production API host baked into `Dedalus::Config`. Override it with `DEDALUS_BASE_URL` (or pass `base_url => ...` to `Dedalus->new`) when hitting preview/staging environments:
+
+```
+export DEDALUS_BASE_URL="https://api.staging.dedalus.ai"
+```
+
+`Dedalus::Config->environment` reports the active environment string; include it when sharing bug reports with the Dedalus team.
+
 ### Chat completion example
 
 After the health check works, try a simple chat completion:
@@ -143,7 +153,7 @@ export DEDALUS_API_KEY=sk-...
 perl examples/create_response.pl "Summarize Dedalus in one sentence"
 ```
 
-The script hits `POST /v1/responses`, prints the response ID, and dumps message blocks if the API returns structured output. Provide `DEDALUS_RESPONSE_MODEL` to override the default model ID.
+The script hits `POST /v1/responses`, prints the response ID, and dumps message blocks if the API returns structured output. If your current `DEDALUS_BASE_URL` does not expose `/v1/responses`, the script logs the missing-endpoint details (base URL, environment, SDK version, etc.) and automatically falls back to `chat.completions.create` so the example still produces output. Provide `DEDALUS_RESPONSE_MODEL` to override the default model ID.
 
 Additional details will be added as the SDK implementation evolves.
 
