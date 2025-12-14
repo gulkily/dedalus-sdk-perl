@@ -1,0 +1,76 @@
+# Dedalus Labs
+
+## Docs
+
+- [Create Chat Completion](https://docs.dedaluslabs.ai/api-reference/v1/create-chat-completion.md): Create a chat completion. Supports streaming, tool calling, and MCP server integration across all providers.
+- [Create Embeddings](https://docs.dedaluslabs.ai/api-reference/v1/create-embeddings.md): Create embeddings using the configured provider.
+- [Create Image](https://docs.dedaluslabs.ai/api-reference/v1/create-image.md): Generate images from text prompts.
+
+Pure image generation models only (DALL-E, GPT Image).
+For multimodal models like gemini-2.5-flash-image, use /v1/chat/completions.
+- [Create Speech](https://docs.dedaluslabs.ai/api-reference/v1/create-speech.md): Generate speech audio from text.
+
+Generates audio from the input text using text-to-speech models. Supports multiple
+voices and output formats including mp3, opus, aac, flac, wav, and pcm.
+
+Returns streaming audio data that can be saved to a file or streamed directly to users.
+- [Create Transcription](https://docs.dedaluslabs.ai/api-reference/v1/create-transcription.md): Transcribe audio into text.
+
+Transcribes audio files using OpenAI's Whisper model. Supports multiple audio formats
+including mp3, mp4, mpeg, mpga, m4a, wav, and webm. Maximum file size is 25 MB.
+
+Args:
+    file: Audio file to transcribe (required)
+    model: Model ID to use (e.g., "openai/whisper-1")
+    language: ISO-639-1 language code (e.g., "en", "es") - improves accuracy
+    prompt: Optional text to guide the model's style
+    response_format: Format of the output (json, text, srt, verbose_json, vtt)
+    temperature: Sampling temperature between 0 and 1
+
+Returns:
+    Transcription object with the transcribed text
+- [Create Translation](https://docs.dedaluslabs.ai/api-reference/v1/create-translation.md): Translate audio into English.
+
+Translates audio files in any supported language to English text using OpenAI's
+Whisper model. Supports the same audio formats as transcription. Maximum file size
+is 25 MB.
+
+Args:
+    file: Audio file to translate (required)
+    model: Model ID to use (e.g., "openai/whisper-1")
+    prompt: Optional text to guide the model's style
+    response_format: Format of the output (json, text, srt, verbose_json, vtt)
+    temperature: Sampling temperature between 0 and 1
+
+Returns:
+    Translation object with the English translation
+- [Quickstart](https://docs.dedaluslabs.ai/api/index.md): Unified API for chat completions, embeddings, audio, and image generation across multiple AI providers
+- [Response Schemas](https://docs.dedaluslabs.ai/api/schemas.md): Reference for all API response objects and their structure
+- [Use docs programmatically](https://docs.dedaluslabs.ai/contextual/use-these-docs.md): Connect Dedalus documentation to your AI tools and workflows
+- [Dedalus Docs](https://docs.dedaluslabs.ai/index.md): Homepage
+- [Chat](https://docs.dedaluslabs.ai/sdk/chat.md): Send messages and get responses from any model
+- [Chat Server with UI](https://docs.dedaluslabs.ai/sdk/cookbook/chat-server.md): Full-stack chat application with FastAPI, WebSockets, and model selection
+- [useChat React Hook](https://docs.dedaluslabs.ai/sdk/cookbook/react-frontend.md): Use the dedalus-react hook with a Python backend for streaming and client-side tool execution
+- [Session Management](https://docs.dedaluslabs.ai/sdk/cookbook/session-management.md): Persist multi-turn conversations using JSON
+- [FAQ](https://docs.dedaluslabs.ai/sdk/guides/faq.md): Frequently Asked Questions
+- [Model Providers](https://docs.dedaluslabs.ai/sdk/guides/providers.md): Mix and match models from supported providers.
+- [MCP Server Guidelines](https://docs.dedaluslabs.ai/sdk/guides/server-guidelines.md): Ensure your server works with the Dedalus platform.
+- [Handoffs](https://docs.dedaluslabs.ai/sdk/handoffs.md): Route tasks to different models based on their strengths
+- [Images & Vision](https://docs.dedaluslabs.ai/sdk/images.md): Generate, edit, and analyze images
+- [MCP Servers](https://docs.dedaluslabs.ai/sdk/mcp.md): Connect to any model to any MCP server
+- [Policies](https://docs.dedaluslabs.ai/sdk/policies.md): Control agent behavior dynamically at runtime
+- [Quickstart](https://docs.dedaluslabs.ai/sdk/quickstart.md): Get up and running with the Dedalus SDK in minutes
+- [Streaming](https://docs.dedaluslabs.ai/sdk/streaming.md): Display responses as they're generated
+- [Structured Outputs](https://docs.dedaluslabs.ai/sdk/structured-outputs.md): Type-safe JSON responses with Pydantic/Zod schemas
+- [Tools](https://docs.dedaluslabs.ai/sdk/tools.md): Give agents the ability to take actions
+- [Concert Planner](https://docs.dedaluslabs.ai/sdk/use-cases/concert-planner.md): Find concerts and venue information
+- [Data Analyst](https://docs.dedaluslabs.ai/sdk/use-cases/data-analyst.md): Create a data analyst agent that can search for real-time data, write and execute Python code to analyze it, and generate insights.
+- [Travel Agent](https://docs.dedaluslabs.ai/sdk/use-cases/travel-agent.md): Creating a travel planning agent that can search for flights, hotels, and provide travel recommendations.
+- [Weather Forecaster](https://docs.dedaluslabs.ai/sdk/use-cases/weather-forecaster.md): Detailed weather analysis with recommendations
+- [Web Search Agent](https://docs.dedaluslabs.ai/sdk/use-cases/web-search-agent.md): Create a web search agent using multiple search MCPs to find and analyze information from the web.
+
+
+## Optional
+
+- [Join Our Community](https://discord.gg/K3SjuFXZJw)
+- [Support](mailto:support@dedaluslabs.ai)
