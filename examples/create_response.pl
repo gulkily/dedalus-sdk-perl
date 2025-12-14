@@ -103,7 +103,7 @@ sub _report_missing_endpoint {
     my $version     = $Dedalus::Version::VERSION // 'dev';
 
     warn <<"MSG";
-Responses API unavailable (404). Share these details with the Dedalus team to enable /v1/responses on your account:
+Responses API unavailable (404). Share these details with the Dedalus team to enable /v1/responses on your account (default production host: https://api.dedaluslabs.ai):
   Base URL     : $base_url
   Environment  : $environment
   Model        : $model
