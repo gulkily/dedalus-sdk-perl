@@ -36,5 +36,6 @@ my $resp = $client->embeddings->create(
 isa_ok($resp, 'Dedalus::Types::CreateEmbeddingResponse');
 is($resp->data->[0]->index, 0, 'embeddings parsed');
 is($http->{last}{path}, '/v1/embeddings', 'hits embeddings endpoint');
+is($http->{last}{opts}{json}{input}, ['hello world'], 'input coerced to arrayref');
 
 done_testing;

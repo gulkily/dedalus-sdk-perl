@@ -3,6 +3,7 @@ use Moo;
 use Carp qw(croak);
 
 use Dedalus::Types::Response;
+use Dedalus::Util::Params qw(require_params ensure_arrayref);
 
 has client => (
     is       => 'ro',
@@ -28,14 +29,14 @@ my @ALLOWED_PARAMS = qw(
 
 sub create {
     my ($self, %params) = @_;
-    croak 'model is required' unless $params{model};
-    croak 'input is required' unless exists $params{input};
+    require_params(\%params, qw(model input));
 
     my %body;
     for my $key (@ALLOWED_PARAMS) {
         next unless exists $params{$key};
         $body{$key} = $params{$key};
     }
+    $body{input} = ensure_arrayref($body{input}, 'input');
 
     my $response = $self->client->request('POST', '/v1/responses', json => \%body);
     return Dedalus::Types::Response->from_hash($response->{data} || {});

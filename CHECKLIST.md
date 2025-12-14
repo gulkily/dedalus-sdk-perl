@@ -18,7 +18,7 @@
   - [x] Create `Dedalus::Client` wrapper exposing resources
 - [ ] Define data models and serialization utilities
   - [ ] Port shared request/response types under `lib/Dedalus/Types/*` (chat, audio, image, assistants, files, vector stores, etc.)
-  - [ ] Add model coercion, validation, and file helpers (mirroring `_models.py`)
+  - [x] Add model coercion, validation, and file helpers (mirroring `_models.py`)
   - [ ] Ensure generated types stay in sync with Python regeneration tooling
   - [ ] Implement remaining resources from dedalus-sdk-python (assistants, threads, responses, vector stores, batches, fine-tunes, files management, etc.)
   - [ ] Keep async modules in parity with sync resources

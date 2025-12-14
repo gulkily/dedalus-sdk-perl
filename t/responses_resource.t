@@ -6,6 +6,7 @@ use Dedalus;
     sub new { bless {}, shift }
     sub request {
         my ($self, $method, $path, %opts) = @_;
+        $self->{last_request} = { method => $method, path => $path, opts => \%opts };
         if ($method eq 'POST') {
             return {
                 status => 200,
@@ -39,6 +40,7 @@ my $resp = $client->responses->create(
     input => [ { role => 'user', content => 'Hi' } ],
 );
 isa_ok($resp, 'Dedalus::Types::Response');
+is($http->{last_request}{opts}{json}{input}, [ { role => 'user', content => 'Hi' } ], 'input preserved as array');
 
 my $retrieved = $client->responses->retrieve('resp_123');
 isa_ok($retrieved, 'Dedalus::Types::Response');
