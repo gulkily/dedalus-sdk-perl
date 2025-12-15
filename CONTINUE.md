@@ -4,7 +4,7 @@ Async coverage now includes models, health checks, files, and sample scripts for
 
 Current priorities (see `CHECKLIST.md` / `PLAN.md` / `README.md` / `api.md` for context):
 
-1. Finish type coverage/validation helpers under `lib/Dedalus/Types/*` first (match `docs/api/schemas.md` for streaming chunks, structured outputs, tool calls, etc.).
+1. Finish any remaining types under `lib/Dedalus/Types/*` (we now cover chat streaming chunks + response output blocks; next up are tool call payloads, image/audio structured pieces from `docs/api/schemas.md`).
 2. Then expand resource modules (responses streaming, assistants/threads/batches/vector stores, async wrappers) using the mirrored docs in `docs/api-reference/`.
 3. Finally, extend the testing strategy (behavior-driven coverage, golden fixtures, structured-output/SSE tests) once types + resources are solid.
 

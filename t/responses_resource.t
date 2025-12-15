@@ -26,7 +26,7 @@ use Dedalus;
                 object => 'response',
                 model  => 'gpt-4',
                 status => 'completed',
-                output => [ { type => 'message', content => 'hi' } ],
+                output => [ { type => 'message', content => [ { type => 'text', text => 'hi' } ] } ],
             },
         };
     }
@@ -45,6 +45,6 @@ is($http->{last_request}{opts}{json}{input}, [ { role => 'user', content => 'Hi'
 my $retrieved = $client->responses->retrieve('resp_123');
 isa_ok($retrieved, 'Dedalus::Types::Response');
 
-is($retrieved->output->[0]{content}, 'hi', 'output parsed');
+is($retrieved->output->[0]->content->[0]->text, 'hi', 'output parsed');
 
 done_testing;

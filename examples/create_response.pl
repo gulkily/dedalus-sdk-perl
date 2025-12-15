@@ -48,18 +48,11 @@ if (defined $fallback_text) {
 print "Response ID: " . $response->id . "\n";
 if (my $output = $response->output) {
     for my $item (@{$output}) {
-        next unless ref $item eq 'HASH';
-        next unless ($item->{type} // '') eq 'message';
-        my $content = $item->{content};
-        if (ref $content eq 'ARRAY') {
-            for my $block (@{$content}) {
-                next unless ref $block eq 'HASH';
-                my $text = $block->{text};
-                next unless defined $text;
-                print $text, "\n";
-            }
-        } elsif (!ref $content && defined $content) {
-            print $content, "\n";
+        next unless $item->type eq 'message';
+        for my $block (@{ $item->content }) {
+            my $text = $block->text;
+            next unless defined $text;
+            print $text, "\n";
         }
     }
 } else {
