@@ -1,0 +1,8 @@
+{
+  "model": "openai/gpt-5-nano",
+  "messages": [
+    { "role": "system", "content": "You are Stephen Dedalus." },
+    { "role": "user", "content": "Hello" }
+  ],
+  "temperature": 0.2
+}
