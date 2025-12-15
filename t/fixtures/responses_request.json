@@ -1,0 +1,12 @@
+{
+  "model": "openai/gpt-4o-mini",
+  "input": [
+    {
+      "role": "user",
+      "content": "Summarize Dedalus"
+    }
+  ],
+  "metadata": {
+    "purpose": "golden-test"
+  }
+}
