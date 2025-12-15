@@ -1,4 +1,5 @@
 use Test2::V0;
+use Cpanel::JSON::XS qw(encode_json);
 use Dedalus;
 
 {
@@ -30,6 +31,20 @@ use Dedalus;
             },
         };
     }
+
+    sub stream_request {
+        my ($self, $method, $path, %opts) = @_;
+        my $cb = $opts{on_chunk};
+        my $payload = Cpanel::JSON::XS::encode_json({
+            type  => 'content.delta',
+            delta => { text => 'partial ' },
+        });
+        $cb->("data: $payload\n\n");
+        my $done_payload = Cpanel::JSON::XS::encode_json({ type => 'content.delta', delta => { text => 'done' } });
+        $cb->("data: $done_payload\n\n");
+        $cb->("data: [DONE]\n\n", { Status => 200 });
+        return bless {}, 'Guard';
+    }
 }
 
 my $http = TestHTTP->new;
@@ -46,5 +61,15 @@ my $retrieved = $client->responses->retrieve('resp_123');
 isa_ok($retrieved, 'Dedalus::Types::Response');
 
 is($retrieved->output->[0]->content->[0]->text, 'hi', 'output parsed');
+
+my $stream = $client->responses->create(
+    model  => 'gpt-4',
+    input  => [ { role => 'user', content => 'Stream me' } ],
+    stream => 1,
+);
+isa_ok($stream, 'Dedalus::Stream');
+my $event = $stream->next;
+isa_ok($event, 'Dedalus::Types::Response::StreamEvent');
+is($event->delta->{text}, 'partial ', 'stream event delta parsed');
 
 done_testing;

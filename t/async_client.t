@@ -1,6 +1,7 @@
 use Test2::V0;
 use Future;
 use Test::MockModule;
+use Cpanel::JSON::XS qw(encode_json);
 
 use Dedalus::Async;
 
@@ -149,5 +150,27 @@ isa_ok($resp_future->get, 'Dedalus::Types::Response');
 
 my $resp_retrieve = $client->responses->retrieve('resp_1');
 isa_ok($resp_retrieve->get, 'Dedalus::Types::Response');
+
+my $http_stream_mock = Test::MockModule->new('Dedalus::HTTP');
+my $orig_stream = Dedalus::HTTP->can('stream_request');
+$http_stream_mock->mock('stream_request', sub {
+    my ($self, $method, $path, %opts) = @_;
+    if ($path eq '/v1/responses') {
+        my $cb = $opts{on_chunk};
+        my $payload = encode_json({ type => 'content.delta', delta => { text => 'chunk' } });
+        $cb->("data: $payload\n\n");
+        $cb->("data: [DONE]\n\n", { Status => 200 });
+        return bless {}, 'Guard';
+    }
+    return $orig_stream->($self, $method, $path, %opts);
+});
+
+my $resp_stream_future = $client->responses->create(
+    model  => 'gpt-4',
+    input  => [ { role => 'user', content => 'Stream' } ],
+    stream => 1,
+);
+isa_ok($resp_stream_future->get, 'Dedalus::Stream');
+$http_stream_mock->unmock_all;
 
 done_testing;

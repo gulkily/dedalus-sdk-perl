@@ -32,7 +32,7 @@
   - [x] Mirror Python resource namespaces (chat, audio, files, etc.)
   - [x] Support nested sub-resources and consistent signatures
   - [x] Implement `responses` resource (create & retrieve)
-  - [ ] Add `responses` streaming helpers + structured-output utilities (per docs)
+  - [x] Add `responses` streaming helpers + structured-output utilities (per docs)
   - [ ] Implement remaining resources from dedalus-sdk-python (assistants, threads, vector stores, batches, fine-tunes, files management, etc.)
   - [ ] Keep async modules in parity with sync resources
 - [x] Add streaming and async support

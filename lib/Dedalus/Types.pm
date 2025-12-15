@@ -19,5 +19,6 @@ use Dedalus::Types::Chat::CompletionChunk;
 use Dedalus::Types::Chat::ChunkChoice;
 use Dedalus::Types::Response::OutputItem;
 use Dedalus::Types::Response::OutputContentBlock;
+use Dedalus::Types::Response::StreamEvent;
 
 1;
