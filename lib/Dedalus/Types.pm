@@ -15,5 +15,7 @@ use Dedalus::Types::ImagesResponse;
 use Dedalus::Types::FileObject;
 use Dedalus::Types::ListFilesResponse;
 use Dedalus::Types::Response;
+use Dedalus::Types::Chat::CompletionChunk;
+use Dedalus::Types::Chat::ChunkChoice;
 
 1;

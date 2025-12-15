@@ -3,6 +3,7 @@ use Moo;
 use Carp qw(croak);
 
 use Dedalus::Types::Chat::Completion;
+use Dedalus::Types::Chat::CompletionChunk;
 use Dedalus::Stream;
 use Dedalus::Util::SSE qw(to_stream_events build_decoder);
 
@@ -48,7 +49,8 @@ sub create {
         my $decoder = build_decoder(sub {
             my ($event) = @_;
             if (defined $event) {
-                $stream->push_chunk($event);
+                my $chunk = Dedalus::Types::Chat::CompletionChunk->from_hash($event);
+                $stream->push_chunk($chunk);
             } else {
                 $stream->finish;
             }

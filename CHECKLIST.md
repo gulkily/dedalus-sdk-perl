@@ -19,7 +19,7 @@
 - [ ] Define data models and serialization utilities (do these before building new resources)
   - [ ] Port shared request/response types under `lib/Dedalus/Types/*` (chat, audio, image, assistants, files, vector stores, etc.)
   - [x] Add model coercion, validation, and file helpers (mirroring `_models.py`)
-  - [ ] Add streaming chunk types (chat/response SSE payloads) per `docs/api/schemas.md`
+  - [x] Add streaming chunk types (chat/response SSE payloads) per `docs/api/schemas.md`
   - [ ] Model structured outputs (`responses` blocks, tool calls, image/audio payloads)
   - [ ] Ensure generated types stay in sync with Python regeneration tooling
 - [ ] Implement resource modules (API surface)

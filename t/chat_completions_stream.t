@@ -7,7 +7,13 @@ my $http_mock = Test::MockModule->new('Dedalus::HTTP');
 $http_mock->mock('stream_request', sub {
     my ($self, $method, $path, %opts) = @_;
     my $cb = $opts{on_chunk};
-    my $payload = encode_json({ choices => [ { delta => { content => 'Hello' } } ] });
+    my $payload = encode_json({
+        id      => 'chunk_1',
+        object  => 'chat.completion.chunk',
+        created => 1,
+        model   => 'openai/gpt-5-nano',
+        choices => [ { index => 0, delta => { content => 'Hello' } } ],
+    });
     $cb->("data: $payload\n\n");
     $cb->("data: [DONE]\n\n", { Status => 200 });
     return bless({}, 'Guard');
@@ -32,7 +38,8 @@ my $stream = $client->chat->completions->create(
 
 isa_ok($stream, 'Dedalus::Stream');
 my $chunk = $stream->next;
-is($chunk->{choices}[0]{delta}{content}, 'Hello', 'stream chunk parsed');
+isa_ok($chunk, 'Dedalus::Types::Chat::CompletionChunk');
+is($chunk->choices->[0]->delta->{content}, 'Hello', 'stream chunk parsed');
 
 ok(!$stream->next, 'stream drained');
 
