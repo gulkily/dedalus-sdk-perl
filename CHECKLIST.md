@@ -47,7 +47,7 @@
   - [ ] Stub HTTP interactions and add smoke/golden tests
   - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
   - [x] Add async/sync parity tests and streaming fixtures
-  - [ ] Add structured-output fixtures (responses/tool calling) and SSE chunk tests
+  - [x] Add structured-output fixtures (responses/tool calling) and SSE chunk tests
 - [ ] Configure tooling, CI, and release automation
   - [x] Add lint/format tooling and CI workflows
   - [ ] Mirror Python release tooling (version bump automation, package publish scripts)
