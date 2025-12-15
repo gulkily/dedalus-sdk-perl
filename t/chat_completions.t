@@ -21,7 +21,17 @@ use Dedalus;
                 choices => [
                     {
                         index   => 0,
-                        message => { role => 'assistant', content => 'Hello!' },
+                        message => {
+                            role       => 'assistant',
+                            content    => 'Hello!',
+                            tool_calls => [
+                                {
+                                    type => 'function',
+                                    id   => 'call_1',
+                                    function => { name => 'get_weather', arguments => '{"location":"Paris"}' },
+                                },
+                            ],
+                        },
                         finish_reason => 'stop',
                     }
                 ],
@@ -45,6 +55,7 @@ my $completion = $client->chat->completions->create(
 isa_ok($completion, 'Dedalus::Types::Chat::Completion');
 isa_ok($completion->choices->[0], 'Dedalus::Types::Chat::Choice');
 is($completion->choices->[0]->message->content, 'Hello!', 'returns parsed assistant text');
+isa_ok($completion->choices->[0]->message->tool_calls->[0], 'Dedalus::Types::Chat::ToolCall');
 
 is(
     $http->{last_request}{path},
