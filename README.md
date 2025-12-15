@@ -146,6 +146,8 @@ perl examples/image_generate.pl "A watercolor portrait of Stephen Dedalus"
 
 Set `DEDALUS_IMAGE_PROMPT`, `DEDALUS_IMAGE_MODEL`, or `DEDALUS_IMAGE_OUTPUT` to customize the request. If the API returns base64 data the script writes it to disk; otherwise it prints the image URL for manual download.
 
+Set `stream => 1` when calling `$client->images->generate(...)` to receive a `Dedalus::Stream` of `Dedalus::Types::Image::StreamEvent` chunks so you can render partial images as soon as they arrive.
+
 ### Using the responses endpoint
 
 ```

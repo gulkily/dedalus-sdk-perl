@@ -21,5 +21,7 @@ use Dedalus::Types::Chat::ToolCall;
 use Dedalus::Types::Response::OutputItem;
 use Dedalus::Types::Response::OutputContentBlock;
 use Dedalus::Types::Response::StreamEvent;
+use Dedalus::Types::Image::Partial;
+use Dedalus::Types::Image::StreamEvent;
 
 1;

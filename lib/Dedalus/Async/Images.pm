@@ -3,7 +3,10 @@ use Moo;
 use Future;
 
 use Dedalus::Types::ImagesResponse;
+use Dedalus::Types::Image::StreamEvent;
 use Dedalus::Util::Multipart qw(normalize_file_field build_multipart_body);
+use Dedalus::Util::SSE qw(build_decoder);
+use Dedalus::Stream;
 
 has client => (
     is       => 'ro',
@@ -12,6 +15,39 @@ has client => (
 
 sub generate {
     my ($self, %params) = @_;
+    my $want_stream = delete $params{stream};
+    $params{stream} = \1 if $want_stream;
+
+    if ($want_stream) {
+        my $stream = Dedalus::Stream->new;
+        my $decoder = build_decoder(sub {
+            my ($event) = @_;
+            if (defined $event) {
+                my $chunk = Dedalus::Types::Image::StreamEvent->from_hash($event);
+                $stream->push_chunk($chunk);
+            } else {
+                $stream->finish;
+            }
+        });
+
+        my $guard = $self->client->http->stream_request(
+            'POST',
+            '/v1/images/generations',
+            json     => \%params,
+            on_chunk => sub {
+                my ($chunk, $meta) = @_;
+                if (defined $chunk) {
+                    $decoder->($chunk);
+                } else {
+                    $stream->finish;
+                }
+            },
+        );
+
+        $stream->guard($guard);
+        return Future->done($stream);
+    }
+
     my $future = $self->client->request_future('POST', '/v1/images/generations', json => \%params);
     return $future->then(sub {
         my ($res) = @_;
