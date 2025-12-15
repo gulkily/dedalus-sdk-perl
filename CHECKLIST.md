@@ -16,14 +16,12 @@
 - [x] Build HTTP client abstraction
   - [x] Implement sync HTTP layer with retries, serialization, multipart
   - [x] Create `Dedalus::Client` wrapper exposing resources
-- [ ] Define data models and serialization utilities
+- [ ] Define data models and serialization utilities (do these before building new resources)
   - [ ] Port shared request/response types under `lib/Dedalus/Types/*` (chat, audio, image, assistants, files, vector stores, etc.)
   - [x] Add model coercion, validation, and file helpers (mirroring `_models.py`)
   - [ ] Add streaming chunk types (chat/response SSE payloads) per `docs/api/schemas.md`
   - [ ] Model structured outputs (`responses` blocks, tool calls, image/audio payloads)
   - [ ] Ensure generated types stay in sync with Python regeneration tooling
-  - [ ] Implement remaining resources from dedalus-sdk-python (assistants, threads, responses, vector stores, batches, fine-tunes, files management, etc.)
-  - [ ] Keep async modules in parity with sync resources
 - [ ] Implement resource modules (API surface)
   - [x] Implement `health` resource and integration example
   - [x] Implement `models` resource (list & retrieve)
@@ -35,6 +33,8 @@
   - [x] Support nested sub-resources and consistent signatures
   - [x] Implement `responses` resource (create & retrieve)
   - [ ] Add `responses` streaming helpers + structured-output utilities (per docs)
+  - [ ] Implement remaining resources from dedalus-sdk-python (assistants, threads, vector stores, batches, fine-tunes, files management, etc.)
+  - [ ] Keep async modules in parity with sync resources
 - [x] Add streaming and async support
   - [x] Implement SSE streaming helpers
   - [x] Provide `Dedalus::Async` built on async primitives
