@@ -67,6 +67,15 @@ perl examples/chat_stream_live.pl "Hello, how do you feel today?"
 
 Chunks print as soon as they arrive. The underlying `Dedalus::Stream` object yields decoded SSE payloads until the `[DONE]` sentinel is reached.
 
+### Runner tool execution
+
+```
+export DEDALUS_API_KEY=sk-...
+perl examples/runner_basic.pl "What's the weather in Boston?"
+```
+
+`Dedalus::Runner` wraps `chat.completions.create` in a tool-execution loop so you can pass local tools alongside your prompt. The current implementation supports non-streaming runs and returns a `Dedalus::Types::Runner::RunResult` with tool results and the full message history.
+
 ### Async usage
 
 The async client returns `Future` instances so you can compose or await results:
