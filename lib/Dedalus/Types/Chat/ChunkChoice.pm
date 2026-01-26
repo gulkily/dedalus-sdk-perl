@@ -1,6 +1,9 @@
 package Dedalus::Types::Chat::ChunkChoice;
 use Moo;
-use Types::Standard qw(Int Maybe HashRef Str);
+use Scalar::Util qw(blessed);
+use Types::Standard qw(Int Maybe HashRef Str InstanceOf);
+
+use Dedalus::Types::Chat::ChunkLogprobs;
 
 has delta => (
     is       => 'ro',
@@ -21,7 +24,7 @@ has index => (
 
 has logprobs => (
     is  => 'ro',
-    isa => Maybe[HashRef],
+    isa => Maybe[InstanceOf['Dedalus::Types::Chat::ChunkLogprobs']],
 );
 
 sub from_hash {
@@ -30,11 +33,19 @@ sub from_hash {
     die 'delta is required' unless exists $hash->{delta};
     my $delta = $hash->{delta};
     die 'delta must be hash ref' unless ref $delta eq 'HASH';
+    my $logprobs;
+    if (exists $hash->{logprobs}) {
+        if (ref $hash->{logprobs} eq 'HASH') {
+            $logprobs = Dedalus::Types::Chat::ChunkLogprobs->from_hash($hash->{logprobs});
+        } elsif (blessed($hash->{logprobs}) && $hash->{logprobs}->isa('Dedalus::Types::Chat::ChunkLogprobs')) {
+            $logprobs = $hash->{logprobs};
+        }
+    }
     return $class->new(
         delta         => $delta,
         finish_reason => $hash->{finish_reason},
         index         => $hash->{index} // 0,
-        logprobs      => $hash->{logprobs},
+        logprobs      => $logprobs,
     );
 }
 

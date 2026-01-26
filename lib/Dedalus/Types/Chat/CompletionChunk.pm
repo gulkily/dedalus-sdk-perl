@@ -1,8 +1,9 @@
 package Dedalus::Types::Chat::CompletionChunk;
 use Moo;
-use Types::Standard qw(Str Int ArrayRef Maybe HashRef InstanceOf);
+use Types::Standard qw(Str Int ArrayRef Maybe InstanceOf);
 
 use Dedalus::Types::Chat::ChunkChoice;
+use Dedalus::Types::Chat::Usage;
 
 has id => (
     is       => 'ro',
@@ -36,7 +37,7 @@ has choices => (
 
 has usage => (
     is  => 'ro',
-    isa => Maybe[HashRef],
+    isa => Maybe[InstanceOf['Dedalus::Types::Chat::Usage']],
 );
 
 has system_fingerprint => (
@@ -53,13 +54,17 @@ sub from_hash {
     my ($class, $hash) = @_;
     die 'expected hash ref' unless ref $hash eq 'HASH';
     my @choices = map { Dedalus::Types::Chat::ChunkChoice->from_hash($_) } @{ $hash->{choices} || [] };
+    my $usage;
+    if (exists $hash->{usage} && ref $hash->{usage} eq 'HASH') {
+        $usage = Dedalus::Types::Chat::Usage->from_hash($hash->{usage});
+    }
     return $class->new(
         id                 => $hash->{id},
         object             => $hash->{object} // 'chat.completion.chunk',
         created            => $hash->{created} // time,
         model              => $hash->{model} // '',
         choices            => \@choices,
-        usage              => $hash->{usage},
+        usage              => $usage,
         system_fingerprint => $hash->{system_fingerprint},
         service_tier       => $hash->{service_tier},
     );
