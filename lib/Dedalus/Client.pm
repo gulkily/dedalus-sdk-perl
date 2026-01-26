@@ -4,6 +4,7 @@ use Scalar::Util qw(blessed);
 
 use Dedalus::Config;
 use Dedalus::HTTP;
+use Dedalus::Resources::Root;
 use Dedalus::Resources::Health;
 use Dedalus::Resources::Chat;
 use Dedalus::Resources::Models;
@@ -28,6 +29,12 @@ has health => (
     is      => 'ro',
     lazy    => 1,
     builder => '_build_health_resource',
+);
+
+has root => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_root_resource',
 );
 
 has chat => (
@@ -80,6 +87,11 @@ sub _build_http {
 sub _build_health_resource {
     my ($self) = @_;
     return Dedalus::Resources::Health->new(client => $self);
+}
+
+sub _build_root_resource {
+    my ($self) = @_;
+    return Dedalus::Resources::Root->new(client => $self);
 }
 
 sub _build_chat_resource {

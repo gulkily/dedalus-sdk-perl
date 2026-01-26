@@ -4,12 +4,19 @@ use warnings;
 
 use Dedalus::Version ();
 use Dedalus::Types::HealthCheckResponse;
+use Dedalus::Types::RootGetResponse;
+use Dedalus::Types::ErrorResponse;
 use Dedalus::Types::Chat::Completion;
 use Dedalus::Types::Model;
 use Dedalus::Types::ListModelsResponse;
 use Dedalus::Types::CreateEmbeddingResponse;
 use Dedalus::Types::Audio::TranscriptionCreateResponse;
 use Dedalus::Types::Audio::TranslationCreateResponse;
+use Dedalus::Types::Audio::Segment;
+use Dedalus::Types::Audio::Word;
+use Dedalus::Types::Audio::TranscriptionLogprob;
+use Dedalus::Types::Audio::TranscriptionUsage;
+use Dedalus::Types::Audio::TranscriptionUsageInputTokenDetails;
 use Dedalus::Types::Image;
 use Dedalus::Types::ImagesResponse;
 use Dedalus::Types::FileObject;
@@ -23,5 +30,7 @@ use Dedalus::Types::Response::OutputContentBlock;
 use Dedalus::Types::Response::StreamEvent;
 use Dedalus::Types::Image::Partial;
 use Dedalus::Types::Image::StreamEvent;
+use Dedalus::Types::Runner::RunResult;
+use Dedalus::Types::Runner::ToolResult;
 
 1;

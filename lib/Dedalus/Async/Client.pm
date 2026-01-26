@@ -12,6 +12,7 @@ use Dedalus::Async::Embeddings;
 use Dedalus::Async::Images;
 use Dedalus::Async::Models;
 use Dedalus::Async::Health;
+use Dedalus::Async::Root;
 use Dedalus::Async::Files;
 use Dedalus::Async::Responses;
 use Dedalus::Async::Files;
@@ -65,6 +66,12 @@ has health => (
     builder => '_build_health',
 );
 
+has root => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_root',
+);
+
 has files => (
     is      => 'ro',
     lazy    => 1,
@@ -110,6 +117,11 @@ sub _build_models {
 sub _build_health {
     my ($self) = @_;
     return Dedalus::Async::Health->new(client => $self);
+}
+
+sub _build_root {
+    my ($self) = @_;
+    return Dedalus::Async::Root->new(client => $self);
 }
 
 sub _build_files {

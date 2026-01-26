@@ -16,6 +16,7 @@ isa_ok($client->health, 'Dedalus::Async::Health');
 isa_ok($client->files, 'Dedalus::Async::Files');
 isa_ok($client->files->content, 'Dedalus::Async::Files::Content');
 isa_ok($client->responses, 'Dedalus::Async::Responses');
+isa_ok($client->root, 'Dedalus::Async::Root');
 
 my $mock = Test::MockModule->new('Dedalus::Async::Client');
 $mock->redefine('request_future', sub {
@@ -55,6 +56,9 @@ $mock->redefine('request_future', sub {
     }
     if ($path eq '/health') {
         return Future->done({ status => 200, headers => {}, data => { status => 'ok' } });
+    }
+    if ($path eq '/' && $method eq 'GET') {
+        return Future->done({ status => 200, headers => {}, data => { message => 'pong' } });
     }
     if ($path eq '/v1/files' && $method eq 'GET') {
         return Future->done({ status => 200, headers => {}, data => { object => 'list', data => [ { id => 'file-1', object => 'file', filename => 'example.txt' } ] } });
@@ -126,6 +130,9 @@ isa_ok($model_future->get, 'Dedalus::Types::Model');
 
 my $health_future = $client->health->check;
 isa_ok($health_future->get, 'Dedalus::Types::HealthCheckResponse');
+
+my $root_future = $client->root->get;
+isa_ok($root_future->get, 'Dedalus::Types::RootGetResponse');
 
 my $files_list_future = $client->files->list;
 isa_ok($files_list_future->get, 'Dedalus::Types::ListFilesResponse');
