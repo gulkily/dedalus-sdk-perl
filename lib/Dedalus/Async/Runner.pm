@@ -7,8 +7,11 @@ use Scalar::Util qw(blessed);
 use Sub::Util qw(subname);
 use Future;
 
+use Dedalus::Stream;
 use Dedalus::Types::Runner::RunResult;
 use Dedalus::Types::Runner::ToolResult;
+use Dedalus::Types::Chat::CompletionChunk;
+use Dedalus::Util::SSE qw(build_decoder);
 
 sub new {
     my ($class, %args) = @_;
@@ -22,7 +25,7 @@ sub run {
     my $model = $args{model};
     croak 'model is required' unless defined $model && $model ne '';
     if ($args{stream}) {
-        croak 'streaming runner is not yet supported';
+        return Future->done($self->_run_stream(\%args));
     }
 
     my $messages = _build_messages(\%args);
@@ -90,6 +93,217 @@ sub _run_step {
 
         return $process_next->()->then(sub { _run_step($self, $state) });
     });
+}
+
+sub _run_stream {
+    my ($self, $args) = @_;
+    my $messages = _build_messages($args);
+    my ($tool_schemas, $tool_handlers) = _prepare_tools($args->{tools});
+
+    my $stream = Dedalus::Stream->new;
+    my $state = {
+        messages      => $messages,
+        tool_schemas  => $tool_schemas,
+        tool_handlers => $tool_handlers,
+        tool_results  => [],
+        tools_called  => [],
+        steps_used    => 0,
+        max_steps     => $args->{max_steps} // 10,
+        final_output  => undef,
+        stream        => $stream,
+        args          => $args,
+    };
+
+    $self->_stream_step($state);
+    return $stream;
+}
+
+sub _stream_step {
+    my ($self, $state) = @_;
+    if ($state->{steps_used} >= $state->{max_steps}) {
+        return _finish_stream($state);
+    }
+
+    $state->{steps_used}++;
+    my %params = _build_request_params($state->{args}, $state->{messages}, $state->{tool_schemas});
+    $params{stream} = 1;
+
+    my $tool_calls = [];
+    my $accumulated_content = '';
+    my $stream_done = 0;
+    my $decoder = build_decoder(sub {
+        my ($event) = @_;
+        if (defined $event) {
+            my $chunk = Dedalus::Types::Chat::CompletionChunk->from_hash($event);
+            $state->{stream}->push_chunk($chunk);
+            for my $choice (@{ $chunk->choices || [] }) {
+                my $delta = $choice->delta || {};
+                if (exists $delta->{tool_calls} && ref $delta->{tool_calls} eq 'ARRAY') {
+                    _accumulate_tool_calls($tool_calls, $delta->{tool_calls});
+                }
+                if (defined $delta->{content}) {
+                    $accumulated_content .= $delta->{content};
+                }
+            }
+        } else {
+            $stream_done = 1;
+        }
+    });
+
+    my $guard = $self->{client}->http->stream_request(
+        'POST',
+        '/v1/chat/completions',
+        json     => \%params,
+        on_chunk => sub {
+            my ($chunk, $meta) = @_;
+            if (defined $chunk) {
+                $decoder->($chunk);
+                return;
+            }
+
+            if ($meta && $meta->{Status} && $meta->{Status} >= 400) {
+                $state->{stream}->push_chunk({ error => $meta->{Reason} });
+                return _finish_stream($state);
+            }
+
+            _finalize_stream_step($self, $state, $tool_calls, $accumulated_content, $stream_done);
+        },
+    );
+
+    $state->{stream}->guard($guard);
+    return;
+}
+
+sub _finalize_stream_step {
+    my ($self, $state, $tool_calls, $accumulated_content, $stream_done) = @_;
+    return unless $stream_done;
+
+    $state->{final_output} = $accumulated_content if defined $accumulated_content;
+    my $assistant_msg = { role => 'assistant', content => $accumulated_content };
+    if ($tool_calls && @$tool_calls) {
+        $assistant_msg->{tool_calls} = $tool_calls;
+        $assistant_msg->{content} = undef if !length $accumulated_content;
+    }
+    push @{ $state->{messages} }, $assistant_msg;
+
+    if ($tool_calls && @$tool_calls) {
+        for my $call (@$tool_calls) {
+            my $fn = $call->{function} || {};
+            my $name = $fn->{name};
+            push @{ $state->{tools_called} }, $name if defined $name;
+            my $args_hash = _parse_args($fn->{arguments});
+            my ($result, $error);
+            if (defined $name && exists $state->{tool_handlers}{$name} && $state->{tool_handlers}{$name}) {
+                eval {
+                    $result = $state->{tool_handlers}{$name}->(%$args_hash);
+                    1;
+                } or do {
+                    $error = $@ || 'tool execution failed';
+                };
+            } else {
+                $error = defined $name ? "tool '$name' not found" : 'tool name missing';
+            }
+
+            if (!defined $error && blessed($result) && $result->isa('Future')) {
+                $result = $result->get;
+            }
+
+            my $tool_result = Dedalus::Types::Runner::ToolResult->new(
+                name   => $name,
+                result => $result,
+                step   => $state->{steps_used},
+                error  => $error,
+                raw    => {
+                    name   => $name,
+                    result => $result,
+                    step   => $state->{steps_used},
+                    error  => $error,
+                },
+            );
+            push @{ $state->{tool_results} }, $tool_result;
+
+            my $content = defined $error ? $error : _stringify_content($result);
+            push @{ $state->{messages} }, {
+                role         => 'tool',
+                tool_call_id => $call->{id},
+                content      => $content,
+            };
+        }
+
+        return $self->_stream_step($state);
+    }
+
+    return _finish_stream($state);
+}
+
+sub _finish_stream {
+    my ($state) = @_;
+    my $raw = {
+        final_output => $state->{final_output},
+        tool_results => [ map { $_->raw } @{ $state->{tool_results} } ],
+        steps_used   => $state->{steps_used},
+        tools_called => $state->{tools_called},
+        messages     => $state->{messages},
+        intents      => $state->{args}->{return_intent} ? [] : undef,
+    };
+
+    my $result = Dedalus::Types::Runner::RunResult->new(
+        final_output => $state->{final_output},
+        output       => $state->{final_output},
+        content      => $state->{final_output},
+        tool_results => $state->{tool_results},
+        steps_used   => $state->{steps_used},
+        tools_called => $state->{tools_called},
+        messages     => $state->{messages},
+        intents      => $state->{args}->{return_intent} ? [] : undef,
+        raw          => $raw,
+    );
+
+    $state->{stream}->result($result) if $state->{stream}->can('result');
+    $state->{stream}->finish;
+    return;
+}
+
+sub _accumulate_tool_calls {
+    my ($accum, $deltas) = @_;
+    return unless $deltas && ref $deltas eq 'ARRAY';
+    for my $delta (@$deltas) {
+        next unless ref $delta eq 'HASH';
+        my $index = defined $delta->{index} ? $delta->{index} : scalar(@$accum);
+        my $target = $accum->[$index] ||= {
+            type     => $delta->{type},
+            id       => $delta->{id},
+            function => { arguments => '' },
+        };
+
+        $target->{id} = $delta->{id} if defined $delta->{id};
+        $target->{type} = $delta->{type} if defined $delta->{type};
+        if (my $fn = $delta->{function}) {
+            $target->{function} ||= { arguments => '' };
+            $target->{function}{name} = $fn->{name} if defined $fn->{name};
+            if (defined $fn->{arguments}) {
+                $target->{function}{arguments} .= $fn->{arguments};
+            }
+        }
+    }
+}
+
+sub _build_request_params {
+    my ($args, $messages, $tool_schemas) = @_;
+    my %params = (
+        model    => $args->{model},
+        messages => $messages,
+    );
+    $params{temperature}       = $args->{temperature} if defined $args->{temperature};
+    $params{max_tokens}        = $args->{max_tokens} if defined $args->{max_tokens};
+    $params{top_p}             = $args->{top_p} if defined $args->{top_p};
+    $params{frequency_penalty} = $args->{frequency_penalty} if defined $args->{frequency_penalty};
+    $params{presence_penalty}  = $args->{presence_penalty} if defined $args->{presence_penalty};
+    $params{logit_bias}        = $args->{logit_bias} if defined $args->{logit_bias};
+    $params{response_format}   = $args->{response_format} if defined $args->{response_format};
+    $params{tool_choice}       = $args->{tool_choice} if defined $args->{tool_choice};
+    $params{tools}             = $tool_schemas if $tool_schemas && @$tool_schemas;
+    return %params;
 }
 
 sub _execute_tool_call {

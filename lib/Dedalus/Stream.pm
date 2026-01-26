@@ -23,6 +23,10 @@ has guard => (
     is => 'rw',
 );
 
+has result => (
+    is => 'rw',
+);
+
 sub next {
     my ($self) = @_;
     while (1) {
