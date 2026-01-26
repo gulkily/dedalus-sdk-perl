@@ -76,6 +76,13 @@ perl examples/runner_basic.pl "What's the weather in Boston?"
 
 `Dedalus::Runner` wraps `chat.completions.create` in a tool-execution loop so you can pass local tools alongside your prompt. The current implementation supports non-streaming runs and returns a `Dedalus::Types::Runner::RunResult` with tool results and the full message history.
 
+Async variant:
+
+```
+export DEDALUS_API_KEY=sk-...
+perl examples/async_runner_basic.pl "What's the weather in Boston?"
+```
+
 ### Async usage
 
 The async client returns `Future` instances so you can compose or await results:
