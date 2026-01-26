@@ -18,6 +18,7 @@ use Dedalus::Async::Responses;
 use Dedalus::Async::Files;
 use Dedalus::Async::Models;
 use Dedalus::Async::Health;
+use Dedalus::Async::Runner;
 
 has config => (
     is       => 'ro',
@@ -84,6 +85,12 @@ has responses => (
     builder => '_build_responses',
 );
 
+has runner => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_runner',
+);
+
 sub _build_http {
     my ($self) = @_;
     return Dedalus::HTTP->new(config => $self->config);
@@ -132,6 +139,11 @@ sub _build_files {
 sub _build_responses {
     my ($self) = @_;
     return Dedalus::Async::Responses->new(client => $self);
+}
+
+sub _build_runner {
+    my ($self) = @_;
+    return Dedalus::Async::Runner->new(client => $self);
 }
 
 around BUILDARGS => sub {

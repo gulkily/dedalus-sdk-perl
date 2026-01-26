@@ -13,6 +13,7 @@ use Dedalus::Resources::Audio;
 use Dedalus::Resources::Images;
 use Dedalus::Resources::Responses;
 use Dedalus::Resources::Files;
+use Dedalus::Runner;
 
 has config => (
     is       => 'ro',
@@ -79,6 +80,12 @@ has files => (
     builder => '_build_files_resource',
 );
 
+has runner => (
+    is      => 'ro',
+    lazy    => 1,
+    builder => '_build_runner',
+);
+
 sub _build_http {
     my ($self) = @_;
     return Dedalus::HTTP->new(config => $self->config);
@@ -127,6 +134,11 @@ sub _build_responses_resource {
 sub _build_files_resource {
     my ($self) = @_;
     return Dedalus::Resources::Files->new(client => $self);
+}
+
+sub _build_runner {
+    my ($self) = @_;
+    return Dedalus::Runner->new(client => $self);
 }
 
 around BUILDARGS => sub {

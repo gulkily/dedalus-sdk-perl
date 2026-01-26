@@ -17,6 +17,7 @@ isa_ok($client->files, 'Dedalus::Async::Files');
 isa_ok($client->files->content, 'Dedalus::Async::Files::Content');
 isa_ok($client->responses, 'Dedalus::Async::Responses');
 isa_ok($client->root, 'Dedalus::Async::Root');
+isa_ok($client->runner, 'Dedalus::Async::Runner');
 
 my $mock = Test::MockModule->new('Dedalus::Async::Client');
 $mock->redefine('request_future', sub {
