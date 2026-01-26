@@ -2,6 +2,7 @@
 
 This document will mirror the generated endpoints from the Python SDK once Perl resources are implemented.
 
+- `root.get` — implemented, returns `Dedalus::Types::RootGetResponse`
 - `health.check` — implemented, returns `Dedalus::Types::HealthCheckResponse` (status string)
 - `chat.completions.create` — implemented for non-streaming calls, returns `Dedalus::Types::Chat::Completion`
 - `chat.completions.create(stream => 1)` — returns `Dedalus::Stream` of incremental SSE events
