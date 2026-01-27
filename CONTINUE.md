@@ -16,3 +16,4 @@ Loop guidance:
 - Run `git status` before/after each session (repo should be clean aside from personal assets like `examples/gdi_exclamation.wav`).
 - Reference `PLAN.md`, `CHECKLIST.md`, `README.md`, and `api.md` each time you start a new chunk of work to stay aligned.
 - Keep async + sync resources in lockstep; add tests/examples/docs for every new feature.
+- Use a fresh git branch for each step and merge it after committing the step's changes.
