@@ -50,6 +50,7 @@ my $client = Dedalus::Client->new(
 my $completion = $client->chat->completions->create(
     model    => 'openai/gpt-5-nano',
     messages => [ { role => 'user', content => 'Hi!' } ],
+    mcp_servers => [ 'local-mcp' ],
 );
 
 isa_ok($completion, 'Dedalus::Types::Chat::Completion');
@@ -64,5 +65,6 @@ is(
 );
 
 is($http->{last_request}{opts}{json}{messages}[0]{content}, 'Hi!', 'sends user message');
+is($http->{last_request}{opts}{json}{mcp_servers}[0], 'local-mcp', 'passes mcp servers');
 
 done_testing;

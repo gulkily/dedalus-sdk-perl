@@ -25,6 +25,7 @@ my @ALLOWED_BODY_KEYS = qw(
   tool_choice
   logprobs
   top_logprobs
+  mcp_servers
 );
 
 sub create {

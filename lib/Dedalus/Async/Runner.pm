@@ -303,6 +303,7 @@ sub _build_request_params {
     $params{response_format}   = $args->{response_format} if defined $args->{response_format};
     $params{tool_choice}       = $args->{tool_choice} if defined $args->{tool_choice};
     $params{tools}             = $tool_schemas if $tool_schemas && @$tool_schemas;
+    $params{mcp_servers}       = $args->{mcp_servers} if defined $args->{mcp_servers};
     return %params;
 }
 
