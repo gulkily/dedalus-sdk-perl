@@ -28,6 +28,7 @@
   - [x] Add parsed chat completion helper types
   - [x] Add chat model ID + models param helper types
   - [x] Add tool call payload types for chat completions/streaming
+  - [x] Add Python↔Perl parity report script for types/resources
   - [ ] Ensure generated types stay in sync with Python regeneration tooling
 - [ ] Implement resource modules (API surface)
   - [x] Implement `health` resource and integration example
