@@ -27,6 +27,16 @@ has created => (
     isa => Maybe[Str],
 );
 
+has service_tier => (
+    is  => 'ro',
+    isa => Maybe[Str],
+);
+
+has system_fingerprint => (
+    is  => 'ro',
+    isa => Maybe[Str],
+);
+
 has choices => (
     is      => 'ro',
     isa     => ArrayRef[InstanceOf['Dedalus::Types::Chat::Choice']],
@@ -50,6 +60,8 @@ sub from_hash {
         object  => $hash->{object} // 'chat.completion',
         model   => $hash->{model} // '',
         created => $hash->{created},
+        service_tier     => $hash->{service_tier},
+        system_fingerprint => $hash->{system_fingerprint},
         choices => \@choices,
         usage   => $usage,
     );

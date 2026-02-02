@@ -1,6 +1,7 @@
 # Dedalus Perl SDK implementation checklist
 
 > Reminder: make a git commit immediately after checking any item below.
+> Update this checklist whenever work starts or completes so status never lags reality.
 
 - [x] Audit Python template and capture requirements
   - [x] Review `README.md`, `api.md`, `pyproject.toml`, and `src/dedalus_labs`
@@ -21,6 +22,7 @@
   - [x] Add model coercion, validation, and file helpers (mirroring `_models.py`)
   - [x] Add streaming chunk types (chat/response SSE payloads) per `docs/api/schemas.md`
   - [x] Model structured outputs (`responses` blocks, tool calls, image/audio payloads)
+  - [x] Parse chat message audio + annotations and response image/audio output blocks
   - [x] Add tool call payload types for chat completions/streaming
   - [ ] Ensure generated types stay in sync with Python regeneration tooling
 - [ ] Implement resource modules (API surface)
@@ -38,8 +40,9 @@
   - [ ] Keep async modules in parity with sync resources
 - [x] Add streaming and async support
   - [x] Implement SSE streaming helpers
+  - [x] Finalize runner streams on `[DONE]` events
   - [x] Provide `Dedalus::Async` built on async primitives
-- [ ] Handle file uploads and multipart logic
+- [x] Handle file uploads and multipart logic
   - [x] Mirror `_files.py` behavior: automatic filenames/content-types, streaming handles, metadata passthrough
   - [x] Expose ergonomic helpers for file uploads in user-facing APIs
   - [x] Port `_files.py` behaviors for IO handles, metadata

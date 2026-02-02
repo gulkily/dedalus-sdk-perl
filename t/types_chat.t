@@ -10,8 +10,19 @@ my $raw = {
             index => 0,
             message => { role => 'assistant', content => 'Hello!' },
             finish_reason => 'stop',
+            logprobs => {
+                content => [
+                    {
+                        token        => 'Hello',
+                        logprob      => -0.2,
+                        top_logprobs => [ { token => 'Hello', logprob => -0.2 } ],
+                    },
+                ],
+            },
         },
     ],
+    service_tier => 'default',
+    system_fingerprint => 'fp_123',
     usage => {
         prompt_tokens     => 5,
         completion_tokens => 7,
@@ -25,6 +36,9 @@ isa_ok($completion->choices->[0], 'Dedalus::Types::Chat::Choice');
 isa_ok($completion->choices->[0]->message, 'Dedalus::Types::Chat::Message');
 is($completion->choices->[0]->message->content, 'Hello!', 'message content extracted');
 
+isa_ok($completion->choices->[0]->logprobs, 'Dedalus::Types::Chat::ChoiceLogprobs');
+is($completion->service_tier, 'default', 'service tier parsed');
+is($completion->system_fingerprint, 'fp_123', 'system fingerprint parsed');
 is($completion->usage->total_tokens, 12, 'usage parsed');
 
 my $raw_audio = {

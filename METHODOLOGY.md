@@ -20,7 +20,7 @@ This methodology explains how we will execute the implementation plan, capture k
 3. **Design stub**: Sketch module/file layout and interfaces (docstrings, POD, or comments) before writing code to keep reviewers aligned.
 4. **Implement incrementally**: Commit small, logically complete changes. Reuse shared helpers and keep interfaces consistent with the Python reference.
 5. **Test immediately**: Add or update unit/integration tests; run the relevant test subset before moving on. Document gaps in the notes file if tests are deferred.
-6. **Update docs/checklist**: Mark the checklist checkbox immediately, note any follow-ups, and extend README/API docs if the change affects users.
+6. **Update docs/checklist**: Mark the checklist checkbox immediately, note any follow-ups, and extend README/API docs if the change affects users. Do not end a work session without updating `CHECKLIST.md` to reflect what changed.
 7. **Commit per checklist step**: Once an item (or coherent sub-item) is complete and documented, create a git commit referencing that checklist line so history mirrors the checklist. If work spans multiple steps, split into separate commits accordingly.
 
 ## Knowledge capture while inspecting the Python SDK
