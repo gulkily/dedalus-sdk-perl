@@ -122,6 +122,7 @@ sub _build_url {
     my $clone = $base->clone;
     my $base_path = $clone->path // '';
     $base_path =~ s{/+$}{};
+    $base_path =~ s{^/}{};
     $path ||= '';
     $path =~ s{^/}{};
     my $full_path = join '/', grep { length } ($base_path, $path);

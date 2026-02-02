@@ -61,6 +61,7 @@
   - [x] Add file extraction regression tests
   - [x] Add deepcopy regression tests
   - [x] Add SSE parser regression tests
+  - [x] Add HTTP query build regression tests
   - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
   - [x] Add async/sync parity tests and streaming fixtures
   - [x] Add structured-output fixtures (responses/tool calling) and SSE chunk tests
