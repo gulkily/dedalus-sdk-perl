@@ -59,6 +59,14 @@ is(
     'removes file keys from array entries',
 );
 
+my $query6 = { files => [ 'a', 'b' ] };
+is(
+    extract_files($query6, paths => [ ['files'] ]),
+    [ ['files[]', 'a'], ['files[]', 'b'] ],
+    'extracts files from array leaf',
+);
+is($query6, {}, 'removes array leaf key');
+
 is(
     extract_files({ foo => { bar => 'baz' } }, paths => [ ['foo', '<array>', 'bar'] ]),
     [],

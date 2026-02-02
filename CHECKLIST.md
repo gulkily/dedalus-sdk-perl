@@ -58,7 +58,7 @@
   - [x] Stub HTTP interactions and add smoke/golden tests
   - [x] Add multipart upload regression test
   - [x] Add querystring serialization regression tests (error cases)
-  - [x] Add file extraction regression tests (including edge cases + errors)
+  - [x] Add file extraction regression tests (including edge cases + errors + array leaf)
   - [x] Add deepcopy regression tests
   - [x] Add SSE parser regression tests (streaming edge cases)
   - [x] Add HTTP query build regression tests
