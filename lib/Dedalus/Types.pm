@@ -44,5 +44,9 @@ use Dedalus::Types::Image::Partial;
 use Dedalus::Types::Image::StreamEvent;
 use Dedalus::Types::Runner::RunResult;
 use Dedalus::Types::Runner::ToolResult;
+use Dedalus::Types::Shared::ResponseFormatText;
+use Dedalus::Types::Shared::ResponseFormatJSONObject;
+use Dedalus::Types::Shared::ResponseFormatJSONSchema;
+use Dedalus::Types::Shared::JSONSchema;
 
 1;

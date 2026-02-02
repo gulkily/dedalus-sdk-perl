@@ -23,6 +23,7 @@
   - [x] Add streaming chunk types (chat/response SSE payloads) per `docs/api/schemas.md`
   - [x] Model structured outputs (`responses` blocks, tool calls, image/audio payloads)
   - [x] Parse chat message audio + annotations and response image/audio output blocks
+  - [x] Add response format helper types (text/json_object/json_schema)
   - [x] Add tool call payload types for chat completions/streaming
   - [ ] Ensure generated types stay in sync with Python regeneration tooling
 - [ ] Implement resource modules (API surface)
