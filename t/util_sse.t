@@ -5,6 +5,9 @@ use Dedalus::Util::SSE qw(parse_sse to_stream_events build_decoder);
 my $events = parse_sse("event: completion\ndata: {\"foo\":1}\n\n");
 is($events, [ { event => 'completion', data => '{"foo":1}' } ], 'parse basic event/data');
 
+$events = parse_sse("event: ping\r\ndata: {\"foo\":1}\r\n\r\n");
+is($events, [ { event => 'ping', data => '{"foo":1}' } ], 'parse CRLF input');
+
 $events = parse_sse("data: {\"foo\":2}\n\n");
 is($events, [ { data => '{"foo":2}' } ], 'parse data without event');
 

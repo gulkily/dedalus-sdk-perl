@@ -60,7 +60,7 @@
   - [x] Add querystring serialization regression tests (error cases)
   - [x] Add file extraction regression tests (including edge cases + errors + array leaf)
   - [x] Add deepcopy regression tests
-  - [x] Add SSE parser regression tests (streaming edge cases)
+  - [x] Add SSE parser regression tests (streaming edge cases + CRLF)
   - [x] Add HTTP query build regression tests
   - [x] Add require_params regression tests
   - [x] Add file upload regression tests (error cases + defaults)

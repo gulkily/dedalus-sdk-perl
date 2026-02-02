@@ -12,6 +12,7 @@ sub parse_sse {
     my @events;
     return \@events unless defined $content && length $content;
 
+    $content =~ s/\r\n/\n/g;
     my @blocks = split(/\n\n/, $content);
     for my $block (@blocks) {
         my $event = _parse_block($block);
