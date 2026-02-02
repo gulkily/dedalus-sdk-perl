@@ -174,7 +174,9 @@ sub _raise_error {
     };
 
     my %args = (
-        message     => $body->{error}{message} // $response->{reason} // 'Dedalus API request failed',
+        message     => (ref($body->{error}) eq 'HASH' ? $body->{error}{message} : $body->{error})
+          // $response->{reason}
+          // 'Dedalus API request failed',
         http_status => $status,
         body        => $body,
     );
