@@ -56,4 +56,10 @@ with_env({ DEDALUS_API_KEY => 'test-key' }, sub {
     like(dies { Dedalus::Config->new(environment => 'staging') }, qr/Enum/, 'invalid environment rejected');
 });
 
+my $envs = Dedalus::Config->environments;
+ok($envs->{production}, 'environments includes production');
+ok($envs->{development}, 'environments includes development');
+$envs->{production} = 'override';
+is(Dedalus::Config->environments->{production}, 'https://api.dedaluslabs.ai', 'environments returns copy');
+
 done_testing;

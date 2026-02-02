@@ -67,7 +67,7 @@
   - [x] Add file upload regression tests (error cases + defaults + content type)
   - [x] Add MIME type regression tests
   - [x] Add multipart error regression tests (tuple/hash content types)
-  - [x] Add config regression tests
+  - [x] Add config regression tests (environments copy)
   - [x] Add HTTP retry regression tests
   - [x] Add stream regression tests
   - [x] Add HTTP error mapping regression tests
