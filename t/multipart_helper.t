@@ -57,4 +57,25 @@ like($body, qr/\{\"foo\":\"bar\"\}/, 'metadata encoded as JSON');
 
 ok($body =~ /hello/, 'includes file bytes');
 
+like(
+    dies { normalize_file_field({ foo => 'bar' }) },
+    qr/file hash must include content, path, or handle/,
+    'invalid file hash croaks',
+);
+
+open my $closed_fh, '<', $filename or die $!;
+close $closed_fh;
+like(
+    dies { normalize_file_field({ handle => $closed_fh }) },
+    qr/handle must be an open filehandle/,
+    'closed handle croaks',
+);
+
+my ($boundary2, $body2) = build_multipart_body({
+    file => normalize_file_field($filename),
+    omit => undef,
+});
+like($body2, qr/name="file"/, 'includes file field');
+unlike($body2, qr/name="omit"/, 'skips undef field');
+
 done_testing;
