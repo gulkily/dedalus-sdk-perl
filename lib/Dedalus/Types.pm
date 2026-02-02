@@ -48,5 +48,10 @@ use Dedalus::Types::Shared::ResponseFormatText;
 use Dedalus::Types::Shared::ResponseFormatJSONObject;
 use Dedalus::Types::Shared::ResponseFormatJSONSchema;
 use Dedalus::Types::Shared::JSONSchema;
+use Dedalus::Types::Shared::Settings;
+use Dedalus::Types::Shared::SettingsReasoning;
+use Dedalus::Types::Shared::SettingsToolChoiceMCPToolChoice;
+use Dedalus::Types::Shared::DedalusModel;
+use Dedalus::Types::Shared::DedalusModelChoice;
 
 1;
