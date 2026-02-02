@@ -32,6 +32,14 @@ is($field->{content}, 'world', 'scalar content used');
 $field = normalize_file_field(DummyPath->new('dummy data'));
 is($field->{content}, 'dummy data', 'path-like object supported');
 
+my $tuple_field = normalize_file_field(['tuple.bin', 'tuple data', 'application/x-tuple']);
+is($tuple_field->{filename}, 'tuple.bin', 'tuple filename preserved');
+is($tuple_field->{content}, 'tuple data', 'tuple content preserved');
+is($tuple_field->{content_type}, 'application/x-tuple', 'tuple content type preserved');
+
+$field = normalize_file_field({ content => 'override', filename => 'override.txt', content_type => 'text/override' });
+is($field->{content_type}, 'text/override', 'hash content type preserved');
+
 open my $fh_read, '<', $filename or die $!;
 my $handle_field = normalize_file_field($fh_read, 'handle.bin');
 is($handle_field->{filename}, 'handle.bin', 'filename applied for handle');
