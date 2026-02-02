@@ -15,10 +15,14 @@ is($arr, [1,2], 'arrayref returned as-is');
 
 like(dies { ensure_arrayref({ foo => 1 }, 'input') }, qr/input must be an array reference or scalar/, 'invalid ref croaks');
 
+my $undef_arr = ensure_arrayref(undef, 'input');
+is($undef_arr, [undef], 'undef coerced to arrayref');
+
 my $orig = { a => [1, { b => 2 }] };
 my $copy = deep_copy($orig);
 $copy->{a}[1]{b} = 3;
 
 is($orig->{a}[1]{b}, 2, 'deep_copy clones nested structures');
+is(deep_copy('hello'), 'hello', 'deep_copy returns scalar');
 
 done_testing;

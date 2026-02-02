@@ -63,6 +63,7 @@
   - [x] Add SSE parser regression tests (streaming edge cases + CRLF)
   - [x] Add HTTP query build regression tests
   - [x] Add require_params regression tests (invalid input)
+  - [x] Add params utility edge case tests
   - [x] Add file upload regression tests (error cases + defaults + content type)
   - [x] Add MIME type regression tests
   - [x] Add multipart error regression tests (tuple/hash content types)
