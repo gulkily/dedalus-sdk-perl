@@ -131,6 +131,7 @@ sub _stream_step {
     my $tool_calls = [];
     my $accumulated_content = '';
     my $stream_done = 0;
+    my $finalized = 0;
     my $decoder = build_decoder(sub {
         my ($event) = @_;
         if (defined $event) {
@@ -147,6 +148,9 @@ sub _stream_step {
             }
         } else {
             $stream_done = 1;
+            return if $finalized;
+            $finalized = 1;
+            _finalize_stream_step($self, $state, $tool_calls, $accumulated_content, $stream_done);
         }
     });
 
@@ -162,10 +166,13 @@ sub _stream_step {
             }
 
             if ($meta && $meta->{Status} && $meta->{Status} >= 400) {
+                $finalized = 1;
                 $state->{stream}->push_chunk({ error => $meta->{Reason} });
                 return _finish_stream($state);
             }
 
+            return if $finalized;
+            $finalized = 1;
             _finalize_stream_step($self, $state, $tool_calls, $accumulated_content, $stream_done);
         },
     );
