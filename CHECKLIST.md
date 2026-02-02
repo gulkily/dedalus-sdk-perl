@@ -20,6 +20,7 @@
 - [ ] Define data models and serialization utilities (do these before building new resources)
   - [ ] Port shared request/response types under `lib/Dedalus/Types/*` (chat, audio, image, assistants, files, vector stores, etc.)
   - [x] Add model coercion, validation, and file helpers (mirroring `_models.py`)
+  - [x] Port querystring serializer (mirroring `_qs.py`)
   - [x] Add streaming chunk types (chat/response SSE payloads) per `docs/api/schemas.md`
   - [x] Model structured outputs (`responses` blocks, tool calls, image/audio payloads)
   - [x] Parse chat message audio + annotations and response image/audio output blocks
@@ -56,6 +57,7 @@
   - [ ] Port behavior-driven tests using Perl testing frameworks
   - [x] Stub HTTP interactions and add smoke/golden tests
   - [x] Add multipart upload regression test
+  - [x] Add querystring serialization regression tests
   - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
   - [x] Add async/sync parity tests and streaming fixtures
   - [x] Add structured-output fixtures (responses/tool calling) and SSE chunk tests

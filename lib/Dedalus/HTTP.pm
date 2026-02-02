@@ -17,6 +17,7 @@ use Dedalus::Exception::NotFoundError;
 use Dedalus::Exception::RateLimitError;
 use Dedalus::Exception::InternalServerError;
 use Dedalus::Exception::APIStatusError;
+use Dedalus::Util::QS qw(stringify);
 
 has config => (
     is       => 'ro',
@@ -126,7 +127,8 @@ sub _build_url {
     my $full_path = join '/', grep { length } ($base_path, $path);
     $clone->path('/' . $full_path);
     if ($query && ref $query eq 'HASH' && %{$query}) {
-        $clone->query_form(%{$query});
+        my $qs = stringify($query);
+        $clone->query($qs) if length $qs;
     }
     return $clone->as_string;
 }
