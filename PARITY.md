@@ -17,6 +17,12 @@ Optional args:
 script/parity_report.sh /path/to/dedalus-sdk-python/src/dedalus_labs --include-params
 ```
 
+You can also fail CI or pre-commit checks when parity is missing:
+
+```
+script/parity_report.sh --check
+```
+
 Interpretation tips:
 - "Missing in Perl" is the actionable list.
 - "Extra in Perl" often reflects finer-grained type classes (expected).

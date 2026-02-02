@@ -30,7 +30,7 @@
   - [x] Add tool call payload types for chat completions/streaming
   - [x] Add Python↔Perl parity report script for types/resources
   - [x] Add parity matrix doc for resource/type coverage
-  - [ ] Ensure generated types stay in sync with Python regeneration tooling
+  - [x] Ensure generated types stay in sync with Python regeneration tooling
 - [x] Implement resource modules (API surface)
   - [x] Implement `health` resource and integration example
   - [x] Implement `models` resource (list & retrieve)
