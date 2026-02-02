@@ -32,6 +32,8 @@ use Dedalus::Types::Chat::Usage;
 use Dedalus::Types::Chat::UsageCompletionTokensDetails;
 use Dedalus::Types::Chat::UsagePromptTokensDetails;
 use Dedalus::Types::Chat::ToolCall;
+use Dedalus::Types::Chat::ParsedFunctionToolCall;
+use Dedalus::Types::Chat::ParsedChatCompletion;
 use Dedalus::Types::Chat::Audio;
 use Dedalus::Types::Chat::Annotation;
 use Dedalus::Types::Chat::Annotation::URLCitation;
