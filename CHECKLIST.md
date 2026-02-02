@@ -59,6 +59,7 @@
   - [x] Add multipart upload regression test
   - [x] Add querystring serialization regression tests
   - [x] Add file extraction regression tests
+  - [x] Add deepcopy regression tests
   - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
   - [x] Add async/sync parity tests and streaming fixtures
   - [x] Add structured-output fixtures (responses/tool calling) and SSE chunk tests
