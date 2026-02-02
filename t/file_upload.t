@@ -19,6 +19,10 @@ is($content_field->{filename}, 'payload.json', 'from_content uses filename');
 is($content_field->{content}, '{"a":1}', 'from_content keeps content');
 is($content_field->{content_type}, 'application/json', 'from_content infers content type');
 
+my $typed_upload = Dedalus::FileUpload->from_content('data', filename => 'payload.bin', content_type => 'application/custom');
+my $typed_field = $typed_upload->to_field;
+is($typed_field->{content_type}, 'application/custom', 'explicit content type preserved');
+
 my $default_upload = Dedalus::FileUpload->from_content('data');
 my $default_field = $default_upload->to_field;
 is($default_field->{filename}, 'upload.dat', 'default filename');
