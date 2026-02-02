@@ -67,6 +67,7 @@
   - [x] Add MIME type regression tests
   - [x] Add multipart error regression tests
   - [x] Add config regression tests
+  - [x] Add HTTP retry regression tests
   - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
   - [x] Add async/sync parity tests and streaming fixtures
   - [x] Add structured-output fixtures (responses/tool calling) and SSE chunk tests
