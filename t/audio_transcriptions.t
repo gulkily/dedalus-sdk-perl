@@ -73,6 +73,13 @@ isa_ok($resp->logprobs->[0], 'Dedalus::Types::Audio::TranscriptionLogprob');
 isa_ok($resp->usage, 'Dedalus::Types::Audio::TranscriptionUsage');
 is($resp->usage->input_tokens, 10, 'usage tokens parsed');
 
+my $duration_usage = Dedalus::Types::Audio::TranscriptionUsage->from_hash({
+    type    => 'duration',
+    seconds => 3.25,
+});
+is($duration_usage->type, 'duration', 'duration usage type parsed');
+is($duration_usage->seconds, 3.25, 'duration usage seconds parsed');
+
 is($http->{last}{path}, '/v1/audio/transcriptions', 'hit audio endpoint');
 
 done_testing;

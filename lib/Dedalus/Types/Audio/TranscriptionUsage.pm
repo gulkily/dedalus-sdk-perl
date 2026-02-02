@@ -1,6 +1,6 @@
 package Dedalus::Types::Audio::TranscriptionUsage;
 use Moo;
-use Types::Standard qw(Int Maybe Str InstanceOf HashRef);
+use Types::Standard qw(Int Maybe Str InstanceOf HashRef Num);
 
 use Dedalus::Types::Audio::TranscriptionUsageInputTokenDetails;
 
@@ -29,6 +29,11 @@ has input_token_details => (
     isa => Maybe[InstanceOf['Dedalus::Types::Audio::TranscriptionUsageInputTokenDetails']],
 );
 
+has seconds => (
+    is  => 'ro',
+    isa => Maybe[Num],
+);
+
 has raw => (
     is       => 'ro',
     isa      => HashRef,
@@ -50,6 +55,7 @@ sub from_hash {
         output_tokens       => $hash->{output_tokens},
         total_tokens        => $hash->{total_tokens},
         input_token_details => $details,
+        seconds             => $hash->{seconds},
         raw                 => $hash,
     );
 }
