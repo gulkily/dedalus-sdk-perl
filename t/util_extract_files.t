@@ -1,4 +1,7 @@
 use Test2::V0;
+use File::Temp qw(tempfile);
+
+use Dedalus::FileUpload;
 
 use Dedalus::Util::Files qw(extract_files);
 
@@ -64,6 +67,66 @@ is(
     extract_files({ foo => { bar => 'baz' } }, paths => [ ['foo', 'foo'] ]),
     [],
     'ignores unknown keys',
+);
+
+my $scalar = "hello";
+my $scalar_query = { file => \$scalar };
+is(
+    extract_files($scalar_query, paths => [ ['file'] ]),
+    [ ['file', \$scalar] ],
+    'extracts scalar ref file content',
+);
+is($scalar_query, {}, 'removes scalar ref entry');
+
+my $hash_query = { file => { content => 'data', filename => 'note.txt' } };
+is(
+    extract_files($hash_query, paths => [ ['file'] ]),
+    [ ['file', { content => 'data', filename => 'note.txt' } ] ],
+    'extracts hash content payload',
+);
+is($hash_query, {}, 'removes hash content entry');
+
+my ($fh, $path) = tempfile();
+print {$fh} 'filedata';
+close $fh;
+
+my $path_query = { file => { path => $path } };
+is(
+    extract_files($path_query, paths => [ ['file'] ]),
+    [ ['file', { path => $path } ] ],
+    'extracts hash path payload',
+);
+is($path_query, {}, 'removes hash path entry');
+
+open my $read_fh, '<', $path or die $!;
+my $handle_query = { file => { handle => $read_fh } };
+is(
+    extract_files($handle_query, paths => [ ['file'] ]),
+    [ ['file', { handle => $read_fh } ] ],
+    'extracts hash handle payload',
+);
+is($handle_query, {}, 'removes hash handle entry');
+close $read_fh;
+
+my $upload = Dedalus::FileUpload->from_content('upload');
+my $upload_query = { file => $upload };
+is(
+    extract_files($upload_query, paths => [ ['file'] ]),
+    [ ['file', $upload ] ],
+    'extracts Dedalus::FileUpload payload',
+);
+is($upload_query, {}, 'removes upload entry');
+
+like(
+    dies { extract_files({ file => { foo => 'bar' } }, paths => [ ['file'] ]) },
+    qr/Expected entry at `file` to be file content/,
+    'invalid hash payload croaks',
+);
+
+like(
+    dies { extract_files({ files => [ { foo => 'bar' } ] }, paths => [ ['files', '<array>'] ]) },
+    qr/Expected entry at `files\[\]` to be file content/,
+    'invalid array entry croaks',
 );
 
 done_testing;
