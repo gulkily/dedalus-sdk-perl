@@ -142,4 +142,10 @@ like(
     'unknown array format',
 );
 
+like(
+    dies { stringify({ a => ['foo', 'bar'] }, array_format => 'indices') },
+    qr/The array indices format is not supported yet/,
+    'indices array format not supported',
+);
+
 done_testing;

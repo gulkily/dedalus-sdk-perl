@@ -57,7 +57,7 @@
   - [ ] Port behavior-driven tests using Perl testing frameworks
   - [x] Stub HTTP interactions and add smoke/golden tests
   - [x] Add multipart upload regression test
-  - [x] Add querystring serialization regression tests
+  - [x] Add querystring serialization regression tests (error cases)
   - [x] Add file extraction regression tests (including edge cases)
   - [x] Add deepcopy regression tests
   - [x] Add SSE parser regression tests (streaming edge cases)
