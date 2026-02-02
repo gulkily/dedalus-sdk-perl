@@ -27,4 +27,28 @@ is($handle_field->{content}, 'hello', 'from_handle reads content');
 is($handle_field->{content_type}, 'text/plain', 'from_handle infers content type');
 close $read_fh;
 
+like(
+    dies { Dedalus::FileUpload->from_path('/no/such/path') },
+    qr/does not exist/,
+    'from_path requires file',
+);
+
+like(
+    dies { Dedalus::FileUpload->from_handle(undef) },
+    qr/handle is required/,
+    'from_handle requires handle',
+);
+
+like(
+    dies { Dedalus::FileUpload->from_content(undef) },
+    qr/content must be defined/,
+    'from_content requires content',
+);
+
+like(
+    dies { Dedalus::FileUpload->new },
+    qr/requires content/,
+    'new requires a source',
+);
+
 done_testing;
