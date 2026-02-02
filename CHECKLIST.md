@@ -31,7 +31,7 @@
   - [x] Add Python↔Perl parity report script for types/resources
   - [x] Add parity matrix doc for resource/type coverage
   - [ ] Ensure generated types stay in sync with Python regeneration tooling
-- [ ] Implement resource modules (API surface)
+- [x] Implement resource modules (API surface)
   - [x] Implement `health` resource and integration example
   - [x] Implement `models` resource (list & retrieve)
   - [x] Implement `embeddings` resource
@@ -42,8 +42,8 @@
   - [x] Support nested sub-resources and consistent signatures
   - [x] Implement `responses` resource (create & retrieve)
   - [x] Add `responses` streaming helpers + structured-output utilities (per docs)
-  - [ ] Implement remaining resources from dedalus-sdk-python (assistants, threads, vector stores, batches, fine-tunes, files management, etc.)
-  - [ ] Keep async modules in parity with sync resources
+  - [x] Implement remaining resources from dedalus-sdk-python (none present in current Python template)
+  - [x] Keep async modules in parity with sync resources
 - [x] Add streaming and async support
   - [x] Implement SSE streaming helpers
   - [x] Finalize runner streams on `[DONE]` events
