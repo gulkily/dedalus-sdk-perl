@@ -5,6 +5,12 @@ use Dedalus::FileUpload;
 
 use Dedalus::Util::Files qw(extract_files);
 
+like(
+    dies { extract_files('nope', paths => []) },
+    qr/query must be hashref/,
+    'requires hashref query',
+);
+
 my $query = { foo => 'bar' };
 is(extract_files($query, paths => []), [], 'no paths returns empty');
 is($query, { foo => 'bar' }, 'no paths leaves query unchanged');
