@@ -55,6 +55,7 @@
 - [ ] Build testing strategy
   - [ ] Port behavior-driven tests using Perl testing frameworks
   - [x] Stub HTTP interactions and add smoke/golden tests
+  - [x] Add multipart upload regression test
   - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
   - [x] Add async/sync parity tests and streaming fixtures
   - [x] Add structured-output fixtures (responses/tool calling) and SSE chunk tests
