@@ -18,6 +18,13 @@ is(
     'parse multi-line data',
 );
 
+$events = parse_sse("event: ping\ndata: {\ndata: \"foo\":\ndata: \ndata:\ndata: true}\n\n");
+is(
+    $events,
+    [ { event => 'ping', data => "{\n\"foo\":\n\n\ntrue}" } ],
+    'parse multi-line data with empty lines',
+);
+
 my $chunks = to_stream_events("data: {\"foo\":3}\n\n");
 is($chunks, [ { foo => 3 } ], 'to_stream_events decodes json');
 
@@ -35,5 +42,25 @@ $decoder->("data: [DONE]\n\n");
 
 is($decoded[0], { foo => 4 }, 'build_decoder yields decoded event');
 ok(!defined $decoded[1], 'build_decoder yields undef on done');
+
+@decoded = ();
+$decoder = build_decoder(sub {
+    push @decoded, $_[0];
+});
+
+$decoder->("event: ping\n");
+$decoder->("data: {\"foo\": \"my long\\n\\ncontent\"}\n");
+$decoder->("\n");
+is($decoded[0], { foo => "my long\n\ncontent" }, 'build_decoder handles escaped newlines');
+
+@decoded = ();
+$decoder = build_decoder(sub {
+    push @decoded, $_[0];
+});
+
+$decoder->("data: {\"foo\":");
+$decoder->(" 5}\n");
+$decoder->("\n");
+is($decoded[0], { foo => 5 }, 'build_decoder handles chunk boundaries');
 
 done_testing;
