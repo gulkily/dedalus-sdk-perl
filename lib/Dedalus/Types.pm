@@ -28,6 +28,8 @@ use Dedalus::Types::Chat::ChunkLogprobs;
 use Dedalus::Types::Chat::CompletionTokenLogprob;
 use Dedalus::Types::Chat::TopLogprob;
 use Dedalus::Types::Chat::ChoiceLogprobs;
+use Dedalus::Types::Chat::ModelID;
+use Dedalus::Types::Chat::ModelsParam;
 use Dedalus::Types::Chat::Usage;
 use Dedalus::Types::Chat::UsageCompletionTokensDetails;
 use Dedalus::Types::Chat::UsagePromptTokensDetails;
