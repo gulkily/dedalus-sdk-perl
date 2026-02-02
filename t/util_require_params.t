@@ -16,6 +16,12 @@ like(
     'missing key croaks',
 );
 
+like(
+    dies { require_params('nope', 'foo') },
+    qr/params must be hashref/,
+    'non-hashref params croak',
+);
+
 ok(
     lives { require_params({ foo => undef }, 'foo') },
     'undef value allowed if key exists',
