@@ -19,6 +19,11 @@ is($content_field->{filename}, 'payload.json', 'from_content uses filename');
 is($content_field->{content}, '{"a":1}', 'from_content keeps content');
 is($content_field->{content_type}, 'application/json', 'from_content infers content type');
 
+my $default_upload = Dedalus::FileUpload->from_content('data');
+my $default_field = $default_upload->to_field;
+is($default_field->{filename}, 'upload.dat', 'default filename');
+is($default_field->{content_type}, 'application/octet-stream', 'default content type');
+
 open my $read_fh, '<', $path or die $!;
 my $handle_upload = Dedalus::FileUpload->from_handle($read_fh, filename => 'note.txt');
 my $handle_field = $handle_upload->to_field;
