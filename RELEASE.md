@@ -14,8 +14,8 @@ The Perl SDK currently follows a manual release flow inspired by the Python proj
    - `git tag vX.Y.Z`
    - `git push origin master --tags`
 4. **Upload to CPAN**
-   - `make dist`
-   - `cpan-upload -u <PAUSE_ID> -p <PAUSE_PASSWORD> Dedalus-Perl-SDK-vX.Y.Z.tar.gz`
+   - `script/check-release-environment.sh`
+   - `script/publish-cpan.sh`
 5. **Post-release**
    - Open an issue to port any automation improvements from `dedalus-sdk-python` (e.g., release scripts, changelog generators).
 

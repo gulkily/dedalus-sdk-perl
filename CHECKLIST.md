@@ -77,7 +77,7 @@
   - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
   - [x] Add async/sync parity tests and streaming fixtures
   - [x] Add structured-output fixtures (responses/tool calling) and SSE chunk tests
-- [ ] Configure tooling, CI, and release automation
+- [x] Configure tooling, CI, and release automation
   - [x] Add lint/format tooling and CI workflows
-  - [ ] Mirror Python release tooling (version bump automation, package publish scripts)
+  - [x] Mirror Python release tooling (version bump automation, package publish scripts)
   - [x] Document release process (Changes, tagging, CPAN upload)
