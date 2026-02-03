@@ -17,8 +17,8 @@
 - [x] Build HTTP client abstraction
   - [x] Implement sync HTTP layer with retries, serialization, multipart
   - [x] Create `Dedalus::Client` wrapper exposing resources
-- [ ] Define data models and serialization utilities (do these before building new resources)
-  - [ ] Port shared request/response types under `lib/Dedalus/Types/*` (chat, audio, image, assistants, files, vector stores, etc.)
+- [x] Define data models and serialization utilities (do these before building new resources)
+  - [x] Port shared request/response types under `lib/Dedalus/Types/*` (chat, audio, image; current Python template has no assistants/vector stores)
   - [x] Add model coercion, validation, and file helpers (mirroring `_models.py`)
   - [x] Port querystring serializer (mirroring `_qs.py`)
   - [x] Add streaming chunk types (chat/response SSE payloads) per `docs/api/schemas.md`
