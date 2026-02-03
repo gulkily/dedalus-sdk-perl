@@ -72,6 +72,7 @@
   - [x] Add stream regression tests
   - [x] Add HTTP error mapping regression tests
   - [x] Add HTTP response parsing regression tests
+  - [x] Add runner result regression tests
   - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
   - [x] Add async/sync parity tests and streaming fixtures
   - [x] Add structured-output fixtures (responses/tool calling) and SSE chunk tests
