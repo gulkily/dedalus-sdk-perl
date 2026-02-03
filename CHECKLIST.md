@@ -53,8 +53,8 @@
   - [x] Mirror `_files.py` behavior: automatic filenames/content-types, streaming handles, metadata passthrough
   - [x] Expose ergonomic helpers for file uploads in user-facing APIs
   - [x] Port `_files.py` behaviors for IO handles, metadata
-- [ ] Build testing strategy
-  - [ ] Port behavior-driven tests using Perl testing frameworks
+- [x] Build testing strategy
+  - [x] Port behavior-driven tests using Perl testing frameworks
   - [x] Stub HTTP interactions and add smoke/golden tests
   - [x] Add multipart upload regression test
   - [x] Add querystring serialization regression tests (error cases)
@@ -74,7 +74,7 @@
   - [x] Add HTTP response parsing regression tests
   - [x] Add runner result regression tests
   - [x] Add runner tool error regression tests
-  - [ ] Mirror Python regression coverage (chat/audio/images/files/batches/etc.)
+  - [x] Mirror Python regression coverage (chat/audio/images/files/batches/etc.; no additional applicable tests)
   - [x] Add async/sync parity tests and streaming fixtures
   - [x] Add structured-output fixtures (responses/tool calling) and SSE chunk tests
 - [x] Configure tooling, CI, and release automation
