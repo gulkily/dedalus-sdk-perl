@@ -4,9 +4,11 @@ This repository hosts the in-progress Dedalus Perl SDK. The project mirrors the 
 
 ## Status
 
-Planning and scaffolding. See `PLAN.md`, `CHECKLIST.md`, and `METHODOLOGY.md` for progress tracking.
+Core SDK features are implemented for the current Python template: sync/async clients, streaming, tool runner, typed responses, file uploads, and parity tooling. See `CHECKLIST.md` and `METHODOLOGY.md` for progress tracking and `PARITY.md` for coverage notes.
 
-The first resource implemented is the `health` endpoint so we can exercise an end-to-end API call.
+### Parity notes
+
+The Perl SDK mirrors the Python SDK’s public API surface, but it does not currently implement Python-only helper abstractions (e.g., raw/streaming response wrappers, Pydantic-style model transforms, LazyProxy helpers). If you need those, please open an issue so we can prioritize them.
 
 ## Development
 

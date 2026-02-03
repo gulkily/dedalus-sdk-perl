@@ -81,3 +81,7 @@
   - [x] Add lint/format tooling and CI workflows
   - [x] Mirror Python release tooling (version bump automation, package publish scripts)
   - [x] Document release process (Changes, tagging, CPAN upload)
+- [ ] Align documentation and parity decisions
+  - [x] Update `README.md` status sections to reflect current completeness
+  - [x] Update `api.md` to match implemented resources
+  - [x] Decide on Python-only utilities/tests (raw response wrappers, model transforms, datetime utils) and document scope or implement

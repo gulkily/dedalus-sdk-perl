@@ -1,6 +1,6 @@
 # Dedalus Perl SDK API surface
 
-This document will mirror the generated endpoints from the Python SDK once Perl resources are implemented.
+This document mirrors the generated endpoints from the Python SDK for the current template. The Perl SDK also includes a few convenience endpoints (files and responses) that are not listed in the Python API docs.
 
 - `root.get` — implemented, returns `Dedalus::Types::RootGetResponse`
 - `health.check` — implemented, returns `Dedalus::Types::HealthCheckResponse` (status string)
@@ -22,6 +22,9 @@ This document will mirror the generated endpoints from the Python SDK once Perl 
 - `files.content.retrieve` — implemented, returns `{ status, headers, content }`
 - `responses.create` — implemented, returns `Dedalus::Types::Response`
 - `responses.retrieve` — implemented, returns `Dedalus::Types::Response`
-- Remaining resources are pending porting from `PLAN.md` / Python template.
+- `responses.create(stream => 1)` — returns `Dedalus::Stream` of `Dedalus::Types::Response::StreamEvent`
+- `images.generate(stream => 1)` — returns `Dedalus::Stream` of `Dedalus::Types::Image::StreamEvent`
+
+All resources in the current Python template are implemented; update this list if new endpoints appear upstream.
 
 Update this file as new resource modules land to keep parity with `dedalus-sdk-python/api.md`.
